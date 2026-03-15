@@ -13,10 +13,20 @@ set(CMAKE_AUTOUIC ON)
 # Znajdź potrzebne pakiety
 set(CMAKE_PREFIX_PATH "C:/Qt/6.10.2/mingw_64" CACHE PATH "Qt path")
 find_package(Qt6 REQUIRED COMPONENTS Quick Widgets Sql Network)
+set(PostgreSQL_ROOT "C:/Program Files/PostgreSQL/18" CACHE PATH "PostgreSQL path")
+find_package(PostgreSQL REQUIRED)
 
 qt_add_executable(PlaneManager
     src/main.cpp
+    src/Flight.cpp
+    src/Plane.cpp
+    src/Airport.cpp
+    include/Flight.h
+    include/Plane.h
+    include/Airport.h
 )
+
+target_include_directories(PlaneManager PRIVATE include/)
 
 qt_add_qml_module(PlaneManager
     URI PlaneManager
@@ -30,4 +40,5 @@ target_link_libraries(PlaneManager PRIVATE
     Qt6::Widgets 
     Qt6::Sql 
     Qt6::Network
+    PostgreSQL::PostgreSQL
 )
