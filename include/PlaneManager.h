@@ -1,0 +1,28 @@
+#ifndef PLANEMANAGER_H
+#define PLANEMANAGER_H
+
+#include <QObject>
+#include <QVariantList>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
+
+class PlaneManager : public QObject {
+    Q_OBJECT
+public:
+    explicit PlaneManager(QObject *parent = nullptr);
+
+    // Dodawanie nowego samolotu
+    Q_INVOKABLE bool addPlane(const QString &brand, const QString &model, const QString &status);
+
+    // Pobieranie listy wszystkich samolotow (dla ListView w QML)
+    Q_INVOKABLE QVariantList getAllPlanes();
+
+    // Edycja istniejacego samolotu
+    Q_INVOKABLE bool updatePlane(int id, const QString &brand, const QString &model, const QString &status);
+
+    // Usuwanie samolotu
+    Q_INVOKABLE bool deletePlane(int id);
+};
+
+#endif // PLANEMANAGER_H

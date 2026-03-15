@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <QStringBuilder>
 #include "DatabaseManager.h"
+#include "PlaneManager.h"
 using namespace Qt::StringLiterals;
 #include <QFile>
 #include <QTextStream>
@@ -28,13 +29,18 @@ void loadDotEnv(const QString &path) {
 
 int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
 
     loadDotEnv(QCoreApplication::applicationDirPath() + "/../.env");
-    QQmlApplicationEngine engine;
 
     DatabaseManager dbManager;
     dbManager.connectToSupabase(); // Test polaczenia z baza danych
     engine.rootContext()->setContextProperty("myDb", &dbManager);
+
+    PlaneManager planeManager;
+    // Udostepniamy obiekt dla QML
+    engine.rootContext()->setContextProperty("planeService", &planeManager);
+
     const QUrl url(u"qrc:/qt/qml/PlaneManager/qml/main.qml"_s);
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
         &app, [url](QObject *obj, const QUrl &objUrl) {
