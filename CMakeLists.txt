@@ -28,11 +28,15 @@ qt_add_executable(PlaneManager
     src/Airport.cpp
     src/DatabaseManager.cpp
     src/PlaneManager.cpp
+    src/AirportManager.cpp
+    src/FlightManager.cpp
     include/Flight.h
     include/Plane.h
     include/Airport.h
     include/DatabaseManager.h
     include/PlaneManager.h
+    include/AirportManager.h
+    include/FlightManager.h
 )
 
 target_include_directories(PlaneManager PRIVATE include/)
