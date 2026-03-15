@@ -49,6 +49,7 @@ ui_*.h
 *.user
 *.userosscache
 *.sln.docstates
+*.env
 
 # OS files
 .DS_Store

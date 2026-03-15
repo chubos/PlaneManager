@@ -25,7 +25,7 @@ void Airport::setName(const QString &name) {
 }
 
 void Airport::setLatitude(double lat) {
-    if (qAbs(m_latitude - lat) > 0.000001) { // Porównanie dla typów zmiennoprzecinkowych
+    if (qAbs(m_latitude - lat) > 0.000001) { // Porownanie dla typow zmiennoprzecinkowych
         m_latitude = lat;
         emit latitudeChanged();
     }

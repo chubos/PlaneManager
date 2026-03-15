@@ -7,7 +7,7 @@
 class Airport : public QObject {
     Q_OBJECT
 
-    // Właściwości dla QML: kod ICAO, nazwa oraz współrzędne GPS
+    // Wlasciwosci dla QML: kod ICAO, nazwa oraz wspolrzedne GPS
     Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(QString icaoCode READ icaoCode WRITE setIcaoCode NOTIFY icaoCodeChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)

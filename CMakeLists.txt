@@ -5,25 +5,32 @@ project(PlaneManager VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Automatyczna obsługa plików Qt
+# Automatyczna obsluga plikow Qt
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# Znajdź potrzebne pakiety
+# Znajdz potrzebne pakiety
 set(CMAKE_PREFIX_PATH "C:/Qt/6.10.2/mingw_64" CACHE PATH "Qt path")
 find_package(Qt6 REQUIRED COMPONENTS Quick Widgets Sql Network)
 set(PostgreSQL_ROOT "C:/Program Files/PostgreSQL/18" CACHE PATH "PostgreSQL path")
 find_package(PostgreSQL REQUIRED)
+
+qt_standard_project_setup(REQUIRES 6.10)
+
+qt_policy(SET QTP0001 NEW)
+qt_policy(SET QTP0004 NEW)
 
 qt_add_executable(PlaneManager
     src/main.cpp
     src/Flight.cpp
     src/Plane.cpp
     src/Airport.cpp
+    src/DatabaseManager.cpp
     include/Flight.h
     include/Plane.h
     include/Airport.h
+    include/DatabaseManager.h
 )
 
 target_include_directories(PlaneManager PRIVATE include/)

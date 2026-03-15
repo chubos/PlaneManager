@@ -7,7 +7,7 @@
 class Plane : public QObject {
     Q_OBJECT
 
-    // Definicja właściwości dostępnych w QML i C++
+    // Definicja wlasciwosci dostepnych w QML i C++
     Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(QString brand READ brand WRITE setBrand NOTIFY brandChanged)
     Q_PROPERTY(QString model READ model WRITE setModel NOTIFY modelChanged)
@@ -32,7 +32,7 @@ public:
     void setImagePath(const QString &path);
 
 signals:
-    // Sygnały informujące UI o zmianie danych
+    // Sygnaly informujace UI o zmianie danych
     void idChanged();
     void brandChanged();
     void modelChanged();
