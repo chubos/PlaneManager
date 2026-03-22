@@ -1,23 +1,96 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Controls.Material
 
 ApplicationWindow {
-    width: 1024
-    height: 768
+    id: window
+    width: 1280
+    height: 800
     visible: true
-    title: qsTr("Plane Manager - Fleet & Logistics")
+    title: "System Zarzadzania Ruchem Lotniczym"
 
-    header: ToolBar {
-        Row {
-            Button { text: "Flota"; onClicked: console.log("Widok Floty") }
-            Button { text: "Mapa"; onClicked: console.log("Widok Mapy") }
-            Button { text: "Statystyki"; onClicked: console.log("Statystyki") }
+    // Wymuszenie jasnego, estetycznego motywu
+    Material.theme: Material.Light
+    Material.accent: Material.Blue // Profesjonalny niebieski
+    Material.primary: Material.BlueGrey
+
+    RowLayout {
+        anchors.fill: parent
+        spacing: 0
+
+        // Panel boczny (Sidebar)
+        Rectangle {
+            Layout.fillHeight: true
+            Layout.preferredWidth: 220
+            color: "#F8F9FA" // Bardzo delikatny, jasny szary (prawie bialy)
+
+            ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: 15
+                spacing: 10
+
+                Label {
+                    text: "NAWIGACJA"
+                    font.pixelSize: 13
+                    font.letterSpacing: 1.5
+                    font.bold: true
+                    color: "#6C757D" // Stonowany szary napis
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.topMargin: 20
+                    Layout.bottomMargin: 20
+                }
+
+                // Trzy proste przyciski
+                Button {
+                    text: "Flota"
+                    Layout.fillWidth: true
+                    Material.elevation: 0
+                    flat: stackView.currentItem && stackView.currentItem.objectName !== "planeView"
+                    font.pixelSize: 15
+                    onClicked: stackView.replace("PlaneList.qml")
+                }
+
+                Button {
+                    text: "Lotniska"
+                    Layout.fillWidth: true
+                    Material.elevation: 0
+                    flat: stackView.currentItem && stackView.currentItem.objectName !== "airportView"
+                    font.pixelSize: 15
+                    onClicked: stackView.replace("AirportList.qml")
+                }
+
+                Button {
+                    text: "Loty"
+                    Layout.fillWidth: true
+                    Material.elevation: 0
+                    flat: stackView.currentItem && stackView.currentItem.objectName !== "flightView"
+                    font.pixelSize: 15
+                    onClicked: stackView.replace("FlightList.qml")
+                }
+
+                Item { Layout.fillHeight: true } // Zapelniacz spychajacy do gory
+            }
+
+            // Subtelna, cienka linia oddzielajaca panel od reszty
+            Rectangle {
+                anchors.right: parent.right
+                width: 1
+                height: parent.height
+                color: "#E9ECEF" 
+            }
         }
-    }
 
-    Text {
-        anchors.centerIn: parent
-        text: "System gotowy."
-        font.pixelSize: 24
+        // Glowny obszar wyswietlania
+        StackView {
+            id: stackView
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            initialItem: "PlaneList.qml"
+            
+            // Plynne przejscie miedzy oknami
+            replaceEnter: Transition { PropertyAnimation { property: "opacity"; from: 0; to: 1; duration: 200 } }
+            replaceExit: Transition { PropertyAnimation { property: "opacity"; from: 1; to: 0; duration: 200 } }
+        }
     }
 }

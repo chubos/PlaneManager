@@ -8,6 +8,7 @@
 #include "FlightManager.h"
 #include <QFile>
 #include <QTextStream>
+#include <QQuickStyle>
 
 using namespace Qt::StringLiterals;
 
@@ -31,6 +32,7 @@ void loadDotEnv(const QString &path) {
 }
 
 int main(int argc, char *argv[]) {
+    QQuickStyle::setStyle("Material");
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
