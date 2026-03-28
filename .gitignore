@@ -22,6 +22,7 @@ moc_*.cpp
 moc_*.h
 qrc_*.cpp
 ui_*.h
+/qmldir
 
 # Qt Creator and Qt tools
 *.pro.user

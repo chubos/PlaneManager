@@ -8,6 +8,12 @@ import QtQuick.Controls.Material
 Item {
     id: root
     objectName: "flightView"
+    property int editFlightId: -1
+    property int editPlaneIdValue: -1
+    property int editDepAirportIdValue: -1
+    property int editArrAirportIdValue: -1
+    property string editStartValue: ""
+    property string editEndValue: ""
 
     // qmllint disable unqualified
     readonly property var service: flightService 
@@ -29,6 +35,7 @@ Item {
             pModel.push({ text: pData[i].brand + " " + pData[i].model, value: pData[i].id });
         }
         planeCombo.model = pModel;
+        editPlaneCombo.model = pModel;
 
         // Lotniska
         // qmllint disable unqualified
@@ -40,6 +47,45 @@ Item {
         }
         depCombo.model = aModel;
         arrCombo.model = aModel;
+        editDepCombo.model = aModel;
+        editArrCombo.model = aModel;
+    }
+
+    function findIndexByValue(modelArray, targetValue) {
+        for (var i = 0; i < modelArray.length; i++) {
+            if (modelArray[i].value === targetValue) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function toIsoDateTime(inputText) {
+        var value = inputText ? inputText.trim() : "";
+        if (value.length === 0) {
+            return "";
+        }
+
+        // UI accepts both: "YYYY-MM-DD HH:MM" and "DD.MM.YYYY HH:MM"
+        if (value.indexOf(".") >= 0) {
+            var parts = value.split(" ");
+            if (parts.length === 2) {
+                var dateParts = parts[0].split(".");
+                if (dateParts.length === 3) {
+                    value = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0] + " " + parts[1];
+                }
+            }
+        }
+
+        if (value.indexOf("T") < 0) {
+            value = value.replace(" ", "T");
+        }
+
+        if (value.length === 16) {
+            value += ":00";
+        }
+
+        return value;
     }
 
     Component.onCompleted: {
@@ -65,13 +111,17 @@ Item {
                 Layout.fillWidth: true
                 spacing: 5
                 Label {
-                    text: "Harmonogram Lotow"
+                    text: "Harmonogram Lotów"
                     font.pixelSize: 32; font.bold: true; color: "#212529"
                 }
                 Label {
-                    text: "Planuj trasy i zarzadzaj rezerwacjami floty"
+                    text: "Planuj trasy i zarządzaj rezerwacjami floty"
                     font.pixelSize: 15; color: "#6C757D"
                 }
+            }
+
+            Item {
+                Layout.fillWidth: true
             }
 
             Button {
@@ -100,7 +150,7 @@ Item {
                 id: flightDelegate
                 required property var modelData
                 width: listView.width - 10 
-                anchors.horizontalCenter: parent.horizontalCenter
+                x: (listView.width - width) / 2
                 Material.background: "#FAFAFA" 
                 padding: 20
 
@@ -131,22 +181,54 @@ Item {
                             font.pixelSize: 14; font.bold: true; color: Material.accent
                         }
                         Label {
-                            text: "Start: " + flightDelegate.modelData.startTime + " | Ladowanie: " + flightDelegate.modelData.endTime
+                            text: "Start: " + flightDelegate.modelData.startTime + " | Lądowanie: " + flightDelegate.modelData.endTime
                             font.pixelSize: 12; color: "#6C757D"
                         }
                     }
 
-                    Item { Layout.preferredWidth: 20 } 
+
+                    Item { Layout.fillWidth: true }
 
                     Button {
                         text: "Anuluj Lot"
                         flat: true
                         Material.foreground: "#DC3545" 
+                        Material.background: "#FFEBEE"
                         Material.elevation: 0
                         onClicked: {
                             if (root.service.deleteFlight(flightDelegate.modelData.id)) {
                                 root.refreshFlights();
                             }
+                        }
+                    }
+                    Button {
+                        text: "Edytuj"
+                        flat: true
+                        Material.foreground: "#1976D2"
+                        Material.background: "#E3F2FD"
+                        Material.elevation: 0
+                        onClicked: {
+                            root.loadDropdowns();
+                            root.editFlightId = flightDelegate.modelData.id;
+                            root.editPlaneIdValue = flightDelegate.modelData.planeId;
+                            root.editDepAirportIdValue = flightDelegate.modelData.depAirportId;
+                            root.editArrAirportIdValue = flightDelegate.modelData.arrAirportId;
+                            root.editStartValue = flightDelegate.modelData.startTime ? flightDelegate.modelData.startTime : "";
+                            root.editEndValue = flightDelegate.modelData.endTime ? flightDelegate.modelData.endTime : "";
+
+                            editStartInput.clear();
+                            editEndInput.clear();
+
+                            var planeIndex = root.findIndexByValue(editPlaneCombo.model, root.editPlaneIdValue);
+                            editPlaneCombo.currentIndex = planeIndex >= 0 ? planeIndex : 0;
+
+                            var depIndex = root.findIndexByValue(editDepCombo.model, root.editDepAirportIdValue);
+                            editDepCombo.currentIndex = depIndex >= 0 ? depIndex : 0;
+
+                            var arrIndex = root.findIndexByValue(editArrCombo.model, root.editArrAirportIdValue);
+                            editArrCombo.currentIndex = arrIndex >= 0 ? arrIndex : 0;
+
+                            editDialog.open();
                         }
                     }
                 }
@@ -167,7 +249,7 @@ Item {
             anchors.fill: parent
             spacing: 15
             
-            Label { text: "Wybierz maszyne:"; color: "#6C757D"; font.bold: true }
+            Label { text: "Wybierz maszynę:"; color: "#6C757D"; font.bold: true }
             ComboBox {
                 id: planeCombo
                 Layout.fillWidth: true; font.pixelSize: 16
@@ -221,6 +303,82 @@ Item {
                 root.refreshFlights();
                 startInput.clear();
                 endInput.clear();
+            }
+        }
+    }
+
+    // --- Dialog Edycji ---
+    Dialog {
+        id: editDialog
+        title: "Edycja Lotu"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        anchors.centerIn: parent
+        modal: true
+        width: 500
+
+        ColumnLayout {
+            anchors.fill: parent
+            spacing: 15
+
+            Label { text: "Wybierz maszynę:"; color: "#6C757D"; font.bold: true }
+            ComboBox {
+                id: editPlaneCombo
+                Layout.fillWidth: true; font.pixelSize: 16
+                textRole: "text"
+                valueRole: "value"
+            }
+
+            Label { text: "Wybierz lotniska (Start -> Cel):"; color: "#6C757D"; font.bold: true; Layout.topMargin: 10 }
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 10
+                ComboBox {
+                    id: editDepCombo
+                    Layout.fillWidth: true; font.pixelSize: 14
+                    textRole: "text"
+                    valueRole: "value"
+                }
+                Label { text: "➔"; font.pixelSize: 20; color: Material.accent }
+                ComboBox {
+                    id: editArrCombo
+                    Layout.fillWidth: true; font.pixelSize: 14
+                    textRole: "text"
+                    valueRole: "value"
+                }
+            }
+
+            Label { text: "Daty i godziny (Format: YYYY-MM-DD HH:MM):"; color: "#6C757D"; font.bold: true; Layout.topMargin: 10 }
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 15
+                TextField {
+                    id: editStartInput
+                    placeholderText: root.editStartValue
+                    Layout.fillWidth: true; font.pixelSize: 14
+                }
+                TextField {
+                    id: editEndInput
+                    placeholderText: root.editEndValue
+                    Layout.fillWidth: true; font.pixelSize: 14
+                }
+            }
+        }
+
+        onAccepted: {
+            var startText = editStartInput.text.length > 0 ? editStartInput.text : root.editStartValue;
+            var endText = editEndInput.text.length > 0 ? editEndInput.text : root.editEndValue;
+            var startIso = root.toIsoDateTime(startText);
+            var endIso = root.toIsoDateTime(endText);
+
+            if (root.service.updateFlight(root.editFlightId,
+                                          editPlaneCombo.currentValue,
+                                          editDepCombo.currentValue,
+                                          editArrCombo.currentValue,
+                                          startIso,
+                                          endIso)) {
+                root.refreshFlights();
+                editStartInput.clear();
+                editEndInput.clear();
             }
         }
     }

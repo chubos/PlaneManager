@@ -8,6 +8,11 @@ import QtQuick.Controls.Material
 Item {
     id: root
     objectName: "airportView"
+    property int editAirportId: -1
+    property string editIcaoValue: ""
+    property string editNameValue: ""
+    property string editLatValue: ""
+    property string editLonValue: ""
 
     // qmllint disable unqualified
     readonly property var service: airportService 
@@ -36,16 +41,19 @@ Item {
             Layout.fillWidth: true
             
             ColumnLayout {
-                Layout.fillWidth: true
                 spacing: 5
                 Label {
                     text: "Baza Lotnisk"
                     font.pixelSize: 32; font.bold: true; color: "#212529"
                 }
                 Label {
-                    text: "Zarzadzaj lokalizacjami i kodami ICAO"
+                    text: "Zarządzaj lokalizacjami i kodami ICAO"
                     font.pixelSize: 15; color: "#6C757D"
                 }
+            }
+
+            Item {
+                Layout.fillWidth: true
             }
 
             Button {
@@ -71,7 +79,7 @@ Item {
                 id: airportDelegate
                 required property var modelData
                 width: listView.width - 10 
-                anchors.horizontalCenter: parent.horizontalCenter
+                x: (listView.width - width) / 2
                 Material.background: "#FAFAFA" 
                 padding: 20
 
@@ -102,22 +110,42 @@ Item {
                             font.pixelSize: 14; font.bold: true; color: Material.accent
                         }
                         Label {
-                            text: "Wspolrzedne: Lat " + Number(airportDelegate.modelData.latitude).toFixed(4) + ", Lon " + Number(airportDelegate.modelData.longitude).toFixed(4)
+                            text: "Współrzędne: φ " + Number(airportDelegate.modelData.latitude).toFixed(4) + ", λ " + Number(airportDelegate.modelData.longitude).toFixed(4)
                             font.pixelSize: 12; color: "#ADB5BD"
                         }
                     }
 
-                    Item { Layout.preferredWidth: 20 } 
+                    Item { Layout.fillWidth: true }
 
                     Button {
-                        text: "Usun"
+                        text: "Usuń"
                         flat: true
                         Material.foreground: "#DC3545" 
+                        Material.background: "#FFEBEE"
                         Material.elevation: 0
                         onClicked: {
                             if (root.service.deleteAirport(airportDelegate.modelData.id)) {
                                 root.refreshAirports();
                             }
+                        }
+                    }
+                    Button {
+                        text: "Edytuj"
+                        flat: true
+                        Material.foreground: "#1976D2"
+                        Material.background: "#E3F2FD"
+                        Material.elevation: 0
+                        onClicked: {
+                            root.editAirportId = airportDelegate.modelData.id
+                            root.editIcaoValue = airportDelegate.modelData.icaoCode ? airportDelegate.modelData.icaoCode : ""
+                            root.editNameValue = airportDelegate.modelData.name ? airportDelegate.modelData.name : ""
+                            root.editLatValue = airportDelegate.modelData.latitude !== undefined ? airportDelegate.modelData.latitude.toString() : ""
+                            root.editLonValue = airportDelegate.modelData.longitude !== undefined ? airportDelegate.modelData.longitude.toString() : ""
+                            editIcaoInput.clear()
+                            editNameInput.clear()
+                            editLatInput.clear()
+                            editLonInput.clear()
+                            editDialog.open();
                         }
                     }
                 }
@@ -146,7 +174,7 @@ Item {
             }
             TextField {
                 id: nameInput
-                placeholderText: "Pelna nazwa lotniska"
+                placeholderText: "Pełna nazwa lotniska"
                 Layout.fillWidth: true; font.pixelSize: 16
             }
             
@@ -156,13 +184,13 @@ Item {
                 spacing: 15
                 TextField {
                     id: latInput
-                    placeholderText: "Szerokosc (Lat)"
+                    placeholderText: "Szerokość (φ)"
                     Layout.fillWidth: true; font.pixelSize: 16
                     inputMethodHints: Qt.ImhFormattedNumbersOnly
                 }
                 TextField {
                     id: lonInput
-                    placeholderText: "Dlugosc (Lon)"
+                    placeholderText: "Długość (λ)"
                     Layout.fillWidth: true; font.pixelSize: 16
                     inputMethodHints: Qt.ImhFormattedNumbersOnly
                 }
@@ -180,6 +208,67 @@ Item {
                 nameInput.clear();
                 latInput.clear();
                 lonInput.clear();
+            }
+        }
+    }
+
+    // --- Dialog Edycji ---
+    Dialog {
+        id: editDialog
+        title: "Edycja Lotniska"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        anchors.centerIn: parent
+        modal: true
+        width: 450
+
+        ColumnLayout {
+            anchors.fill: parent
+            spacing: 20
+
+            TextField {
+                id: editIcaoInput
+                placeholderText: root.editIcaoValue
+                Layout.fillWidth: true; font.pixelSize: 16
+                maximumLength: 4
+            }
+            TextField {
+                id: editNameInput
+                placeholderText: root.editNameValue
+                Layout.fillWidth: true; font.pixelSize: 16
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 15
+                TextField {
+                    id: editLatInput
+                    placeholderText: root.editLatValue
+                    Layout.fillWidth: true; font.pixelSize: 16
+                    inputMethodHints: Qt.ImhFormattedNumbersOnly
+                }
+                TextField {
+                    id: editLonInput
+                    placeholderText: root.editLonValue
+                    Layout.fillWidth: true; font.pixelSize: 16
+                    inputMethodHints: Qt.ImhFormattedNumbersOnly
+                }
+            }
+        }
+
+        onAccepted: {
+            var icaoToSave = editIcaoInput.text.length > 0 ? editIcaoInput.text.toUpperCase() : root.editIcaoValue
+            var nameToSave = editNameInput.text.length > 0 ? editNameInput.text : root.editNameValue
+            var latText = editLatInput.text.length > 0 ? editLatInput.text : root.editLatValue
+            var lonText = editLonInput.text.length > 0 ? editLonInput.text : root.editLonValue
+            var latToSave = parseFloat(latText.replace(",", "."))
+            var lonToSave = parseFloat(lonText.replace(",", "."))
+
+            if (root.service.updateAirport(root.editAirportId, icaoToSave, nameToSave, latToSave, lonToSave)) {
+                root.refreshAirports();
+                editIcaoInput.clear();
+                editNameInput.clear();
+                editLatInput.clear();
+                editLonInput.clear();
             }
         }
     }

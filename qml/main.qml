@@ -8,11 +8,10 @@ ApplicationWindow {
     width: 1280
     height: 800
     visible: true
-    title: "System Zarzadzania Ruchem Lotniczym"
+    title: "Plane Manager"
 
-    // Wymuszenie jasnego, estetycznego motywu
     Material.theme: Material.Light
-    Material.accent: Material.Blue // Profesjonalny niebieski
+    Material.accent: Material.Blue
     Material.primary: Material.BlueGrey
 
     RowLayout {
@@ -23,7 +22,7 @@ ApplicationWindow {
         Rectangle {
             Layout.fillHeight: true
             Layout.preferredWidth: 220
-            color: "#F8F9FA" // Bardzo delikatny, jasny szary (prawie bialy)
+            color: "#F8F9FA"
 
             ColumnLayout {
                 anchors.fill: parent
@@ -32,18 +31,18 @@ ApplicationWindow {
 
                 Label {
                     text: "NAWIGACJA"
-                    font.pixelSize: 13
+                    font.pixelSize: 20
                     font.letterSpacing: 1.5
                     font.bold: true
-                    color: "#6C757D" // Stonowany szary napis
+                    color: "#6C757D"
                     Layout.alignment: Qt.AlignHCenter
                     Layout.topMargin: 20
                     Layout.bottomMargin: 20
                 }
 
-                // Trzy proste przyciski
+                // Trzy przyciski
                 Button {
-                    text: "Flota"
+                    text: "Samoloty"
                     Layout.fillWidth: true
                     Material.elevation: 0
                     flat: stackView.currentItem && stackView.currentItem.objectName !== "planeView"

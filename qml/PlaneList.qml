@@ -8,6 +8,10 @@ import QtQuick.Controls.Material
 Item {
     id: root
     objectName: "planeView"
+    property int editPlaneId: -1
+    property string editBrandValue: ""
+    property string editModelValue: ""
+    property string editStatusValue: ""
 
     // qmllint disable unqualified
     readonly property var service: planeService 
@@ -33,19 +37,22 @@ Item {
         // --- Naglowek ---
         RowLayout {
             Layout.fillWidth: true
-            spacing: 25
+            spacing: 40
             
             ColumnLayout {
-                Layout.fillWidth: true
                 spacing: 5
                 Label {
-                    text: "Flota Samolotow"
+                    text: "Flota Samolotów"
                     font.pixelSize: 32; font.bold: true; color: "#212529"
                 }
                 Label {
-                    text: "Zarzadzaj swoimi maszynami i ich statusem"
+                    text: "Zarządzaj swoimi maszynami i ich statusem"
                     font.pixelSize: 15; color: "#6C757D"
                 }
+            }
+
+            Item {
+                Layout.fillWidth: true
             }
 
             Button {
@@ -71,7 +78,7 @@ Item {
                 id: planeDelegate
                 required property var modelData
                 width: listView.width - 10 
-                anchors.horizontalCenter: parent.horizontalCenter
+                x: (listView.width - width) / 2
                 Material.background: "#FAFAFA" 
                 padding: 20
 
@@ -84,7 +91,6 @@ Item {
                         color: "#E3F2FD" 
                         Label {
                             anchors.centerIn: parent
-                            // Uzywamy modelData i sprawdzamy czy istnieje
                             text: planeDelegate.modelData.brand ? planeDelegate.modelData.brand.charAt(0) : "?" 
                             font.pixelSize: 20; font.bold: true; color: Material.accent
                         }
@@ -94,7 +100,6 @@ Item {
                         Layout.fillWidth: true
                         spacing: 4
                         Label {
-                            // Wszedzie zmieniamy 'model' na 'modelData'
                             text: planeDelegate.modelData.brand + " " + planeDelegate.modelData.model
                             font.pixelSize: 18; font.bold: true; color: "#212529"
                         }
@@ -104,6 +109,8 @@ Item {
                         }
                     }
 
+                    Item { Layout.preferredWidth: 20 } 
+
                     Rectangle {
                         width: 110; height: 32; radius: 16
                         color: planeDelegate.modelData.status === "Dostepny" ? "#E8F5E9" : (planeDelegate.modelData.status === "W locie" ? "#FFF3E0" : "#FFEBEE")
@@ -111,22 +118,41 @@ Item {
                         Label {
                             anchors.centerIn: parent
                             text: planeDelegate.modelData.status
-                            font.pixelSize: 12; font.bold: true
+                            font.pixelSize: 14; font.bold: true
                             color: planeDelegate.modelData.status === "Dostepny" ? "#2E7D32" : (planeDelegate.modelData.status === "W locie" ? "#EF6C00" : "#C62828")
                         }
                     }
 
-                    Item { Layout.preferredWidth: 20 } 
+                    Item { Layout.fillWidth: true } 
 
                     Button {
-                        text: "Usun"
+                        text: "Usuń"
                         flat: true
                         Material.foreground: "#DC3545" 
+                        Material.background: "#FFEBEE"
                         Material.elevation: 0
                         onClicked: {
                             if (root.service.deletePlane(planeDelegate.modelData.id)) {
                                 root.refreshPlanes();
                             }
+                        }
+                    }
+                    Button {
+                        text: "Edytuj"
+                        flat: true
+                        Material.foreground: "#1976D2" 
+                        Material.background: "#E3F2FD"
+                        Material.elevation: 0
+                        onClicked: {
+                            root.editPlaneId = planeDelegate.modelData.id
+                            root.editBrandValue = planeDelegate.modelData.brand ? planeDelegate.modelData.brand : ""
+                            root.editModelValue = planeDelegate.modelData.model ? planeDelegate.modelData.model : ""
+                            root.editStatusValue = planeDelegate.modelData.status ? planeDelegate.modelData.status : "Dostepny"
+                            editBrandInput.clear()
+                            editModelInput.clear()
+                            var statusIndex = editStatusInput.model.indexOf(root.editStatusValue)
+                            editStatusInput.currentIndex = statusIndex >= 0 ? statusIndex : 0
+                            editDialog.open();
                         }
                     }
                 }
@@ -172,4 +198,46 @@ Item {
             }
         }
     }
+
+    // --- Dialog Edycji ---
+    Dialog {
+        id: editDialog
+        title: "Edycja Samolotu"
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        anchors.centerIn: parent
+        modal: true
+        width: 400
+
+        ColumnLayout {
+            anchors.fill: parent
+            spacing: 20
+
+            TextField {
+                id: editBrandInput
+                placeholderText: root.editBrandValue
+                Layout.fillWidth: true; font.pixelSize: 16
+            }
+            TextField {
+                id: editModelInput
+                placeholderText: root.editModelValue
+                Layout.fillWidth: true; font.pixelSize: 16
+            }
+            ComboBox {
+                id: editStatusInput
+                model: ["Dostepny", "W serwisie", "W locie"]
+                Layout.fillWidth: true; font.pixelSize: 16
+            }
+        }
+
+        onAccepted: {
+            var brandToSave = editBrandInput.text.length > 0 ? editBrandInput.text : root.editBrandValue
+            var modelToSave = editModelInput.text.length > 0 ? editModelInput.text : root.editModelValue
+            if (root.service.updatePlane(root.editPlaneId, brandToSave, modelToSave, editStatusInput.currentText)) {
+                root.refreshPlanes();
+                editBrandInput.clear();
+                editModelInput.clear();
+            }
+        }
+    }
+
 }
