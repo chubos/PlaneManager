@@ -77,6 +77,20 @@ Item {
             delegate: Pane {
                 id: planeDelegate
                 required property var modelData
+                readonly property string brandLower: modelData.brand ? modelData.brand.toLowerCase() : ""
+                readonly property url logoSource: {
+                    if (brandLower.indexOf("airbus") !== -1) return "qrc:/qt/qml/PlaneManager/assets/airbus.png";
+                    if (brandLower.indexOf("boeing") !== -1) return "qrc:/qt/qml/PlaneManager/assets/boeing.png";
+                    if (brandLower.indexOf("embraer") !== -1) return "qrc:/qt/qml/PlaneManager/assets/embraer.png";
+                    if (brandLower.indexOf("bombardier") !== -1) return "qrc:/qt/qml/PlaneManager/assets/bombardier.png";
+                    if (brandLower.indexOf("atr") !== -1) return "qrc:/qt/qml/PlaneManager/assets/atr.png";
+                    if (brandLower.indexOf("cessna") !== -1) return "qrc:/qt/qml/PlaneManager/assets/cessna.png";
+                    if (brandLower.indexOf("gulfstream") !== -1) return "qrc:/qt/qml/PlaneManager/assets/gulfstream.png";
+                    if (brandLower.indexOf("dassault") !== -1) return "qrc:/qt/qml/PlaneManager/assets/dassault.png";
+                    if (brandLower.indexOf("antonov") !== -1) return "qrc:/qt/qml/PlaneManager/assets/antonov.png";
+                    if (brandLower.indexOf("sukhoi") !== -1) return "qrc:/qt/qml/PlaneManager/assets/sukhoi.png";
+                    return "";
+                }
                 width: listView.width - 10 
                 x: (listView.width - width) / 2
                 Material.background: "#FAFAFA" 
@@ -86,13 +100,19 @@ Item {
                     anchors.fill: parent
                     spacing: 25
 
-                    Rectangle {
-                        width: 46; height: 46; radius: 23
-                        color: "#E3F2FD" 
-                        Label {
+                    Item {
+                        Layout.preferredWidth: 190
+                        Layout.preferredHeight: 140
+
+                        Image {
                             anchors.centerIn: parent
-                            text: planeDelegate.modelData.brand ? planeDelegate.modelData.brand.charAt(0) : "?" 
-                            font.pixelSize: 20; font.bold: true; color: Material.accent
+                            width: 150
+                            height: 120
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
+                            mipmap: false
+                            source: planeDelegate.logoSource
+                            visible: planeDelegate.logoSource !== ""
                         }
                     }
 

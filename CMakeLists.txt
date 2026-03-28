@@ -49,6 +49,17 @@ qt_add_qml_module(PlaneManager
         qml/PlaneList.qml
         qml/AirportList.qml
         qml/FlightList.qml
+    RESOURCES
+        assets/airbus.png
+        assets/boeing.png
+        assets/embraer.png
+        assets/bombardier.png
+        assets/atr.png
+        assets/cessna.png
+        assets/gulfstream.png
+        assets/dassault.png
+        assets/antonov.png
+        assets/sukhoi.png
 )
 
 target_link_libraries(PlaneManager PRIVATE 
