@@ -14,6 +14,8 @@ Item {
     property int editArrAirportIdValue: -1
     property string editStartValue: ""
     property string editEndValue: ""
+    property var pickerTargetField: null
+    property date pickerSelectedDate: new Date()
 
     // qmllint disable unqualified
     readonly property var service: flightService 
@@ -86,6 +88,56 @@ Item {
         }
 
         return value;
+    }
+
+    function formatDisplayDateTime(dateObj) {
+        return Qt.formatDateTime(dateObj, "yyyy-MM-dd HH:mm");
+    }
+
+    function parseDateTimeOrFallback(inputText, fallbackDate) {
+        var iso = root.toIsoDateTime(inputText);
+        if (iso.length === 0) {
+            return fallbackDate;
+        }
+
+        var parsed = new Date(iso);
+        if (isNaN(parsed.getTime())) {
+            return fallbackDate;
+        }
+
+        return parsed;
+    }
+
+    function openDateTimePicker(targetField, initialText) {
+        root.pickerTargetField = targetField;
+        var fallback = new Date();
+        var initial = root.parseDateTimeOrFallback(initialText, fallback);
+
+        root.pickerSelectedDate = initial;
+        monthGrid.month = initial.getMonth();
+        monthGrid.year = initial.getFullYear();
+        hourSpin.value = initial.getHours();
+        minuteSpin.value = initial.getMinutes();
+        dateTimePopup.open();
+    }
+
+    function applyPickedDateTime() {
+        if (!root.pickerTargetField) {
+            return;
+        }
+
+        var picked = root.pickerSelectedDate;
+        var composed = new Date(
+            picked.getFullYear(),
+            picked.getMonth(),
+            picked.getDate(),
+            hourSpin.value,
+            minuteSpin.value,
+            0
+        );
+
+        root.pickerTargetField.text = root.formatDisplayDateTime(composed);
+        dateTimePopup.close();
     }
 
     Component.onCompleted: {
@@ -216,8 +268,8 @@ Item {
                             root.editStartValue = flightDelegate.modelData.startTime ? flightDelegate.modelData.startTime : "";
                             root.editEndValue = flightDelegate.modelData.endTime ? flightDelegate.modelData.endTime : "";
 
-                            editStartInput.clear();
-                            editEndInput.clear();
+                            editStartInput.text = root.editStartValue;
+                            editEndInput.text = root.editEndValue;
 
                             var planeIndex = root.findIndexByValue(editPlaneCombo.model, root.editPlaneIdValue);
                             editPlaneCombo.currentIndex = planeIndex >= 0 ? planeIndex : 0;
@@ -243,7 +295,7 @@ Item {
         standardButtons: Dialog.Ok | Dialog.Cancel
         anchors.centerIn: parent
         modal: true
-        width: 500
+        width: Math.min(root.width - 40, 860)
 
         ColumnLayout {
             anchors.fill: parent
@@ -282,21 +334,41 @@ Item {
                 spacing: 15
                 TextField {
                     id: startInput
-                    placeholderText: "Start np. 2026-06-15 14:30"
+                    placeholderText: "Start"
+                    readOnly: true
                     Layout.fillWidth: true; font.pixelSize: 14
+                }
+                Button {
+                    text: "Wybierz"
+                    onClicked: root.openDateTimePicker(startInput, startInput.text)
                 }
                 TextField {
                     id: endInput
-                    placeholderText: "Koniec np. 2026-06-15 17:00"
+                    placeholderText: "Koniec"
+                    readOnly: true
                     Layout.fillWidth: true; font.pixelSize: 14
+                }
+                Button {
+                    text: "Wybierz"
+                    onClicked: root.openDateTimePicker(endInput, endInput.text)
                 }
             }
         }
 
+        onOpened: {
+            if (startInput.text.length === 0) {
+                startInput.text = root.formatDisplayDateTime(new Date());
+            }
+            if (endInput.text.length === 0) {
+                var endDefault = new Date();
+                endDefault.setHours(endDefault.getHours() + 2);
+                endInput.text = root.formatDisplayDateTime(endDefault);
+            }
+        }
+
         onAccepted: {
-            // Poniewaz QDateTime w C++ lubi format ISO, formatujemy tekst z pol (zamieniamy spacje na T i dodajemy sekundy)
-            var startIso = startInput.text.replace(" ", "T") + ":00";
-            var endIso = endInput.text.replace(" ", "T") + ":00";
+            var startIso = root.toIsoDateTime(startInput.text);
+            var endIso = root.toIsoDateTime(endInput.text);
 
             // planeCombo.currentValue zwroci nam bezposrednio ID samolotu!
             if (root.service.addFlight(planeCombo.currentValue, depCombo.currentValue, arrCombo.currentValue, startIso, endIso)) {
@@ -314,7 +386,7 @@ Item {
         standardButtons: Dialog.Ok | Dialog.Cancel
         anchors.centerIn: parent
         modal: true
-        width: 500
+        width: Math.min(root.width - 40, 860)
 
         ColumnLayout {
             anchors.fill: parent
@@ -353,13 +425,23 @@ Item {
                 spacing: 15
                 TextField {
                     id: editStartInput
-                    placeholderText: root.editStartValue
+                    placeholderText: "Start"
+                    readOnly: true
                     Layout.fillWidth: true; font.pixelSize: 14
+                }
+                Button {
+                    text: "Wybierz"
+                    onClicked: root.openDateTimePicker(editStartInput, editStartInput.text)
                 }
                 TextField {
                     id: editEndInput
-                    placeholderText: root.editEndValue
+                    placeholderText: "Koniec"
+                    readOnly: true
                     Layout.fillWidth: true; font.pixelSize: 14
+                }
+                Button {
+                    text: "Wybierz"
+                    onClicked: root.openDateTimePicker(editEndInput, editEndInput.text)
                 }
             }
         }
@@ -379,6 +461,180 @@ Item {
                 root.refreshFlights();
                 editStartInput.clear();
                 editEndInput.clear();
+            }
+        }
+    }
+
+    Popup {
+        id: dateTimePopup
+        modal: true
+        focus: true
+        anchors.centerIn: parent
+        width: Math.min(root.width - 30, 620)
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+        background: Rectangle {
+            color: "white"
+            radius: 10
+            border.color: "#E0E0E0"
+        }
+
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 14
+            anchors.rightMargin: 14
+            anchors.topMargin: 14
+            anchors.bottomMargin: 50
+            spacing: 10
+
+            Label {
+                text: "Wybierz date i godzine"
+                font.bold: true
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+
+                Button {
+                    text: "<"
+                    onClicked: {
+                        if (monthGrid.month === 0) {
+                            monthGrid.month = 11;
+                            monthGrid.year = monthGrid.year - 1;
+                        } else {
+                            monthGrid.month = monthGrid.month - 1;
+                        }
+                    }
+                }
+
+                Label {
+                    Layout.fillWidth: true
+                    horizontalAlignment: Text.AlignHCenter
+                    text: Qt.formatDate(new Date(monthGrid.year, monthGrid.month, 1), "MMMM yyyy")
+                }
+
+                Button {
+                    text: ">"
+                    onClicked: {
+                        if (monthGrid.month === 11) {
+                            monthGrid.month = 0;
+                            monthGrid.year = monthGrid.year + 1;
+                        } else {
+                            monthGrid.month = monthGrid.month + 1;
+                        }
+                    }
+                }
+            }
+
+            DayOfWeekRow {
+                locale: Qt.locale()
+                Layout.fillWidth: true
+            }
+
+            MonthGrid {
+                id: monthGrid
+                Layout.fillWidth: true
+                month: root.pickerSelectedDate.getMonth()
+                year: root.pickerSelectedDate.getFullYear()
+
+                delegate: Rectangle {
+                    id: dayCell
+                    required property var model
+
+                    readonly property date cellDate: model.date
+                    readonly property bool inCurrentMonth: cellDate.getMonth() === monthGrid.month
+                    readonly property bool selectedDate: cellDate.getDate() === root.pickerSelectedDate.getDate()
+                                                        && cellDate.getMonth() === root.pickerSelectedDate.getMonth()
+                                                        && cellDate.getFullYear() === root.pickerSelectedDate.getFullYear()
+
+                    implicitWidth: 38
+                    implicitHeight: 32
+                    radius: 16
+                    color: selectedDate ? Material.accentColor : "transparent"
+                    opacity: inCurrentMonth ? 1.0 : 0.45
+
+                    Label {
+                        anchors.centerIn: parent
+                        text: dayCell.cellDate.getDate()
+                        color: parent.selectedDate ? "white" : "#212529"
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            root.pickerSelectedDate = new Date(dayCell.cellDate.getFullYear(), dayCell.cellDate.getMonth(), dayCell.cellDate.getDate());
+                            monthGrid.month = root.pickerSelectedDate.getMonth();
+                            monthGrid.year = root.pickerSelectedDate.getFullYear();
+                        }
+                    }
+                }
+            }
+
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+                spacing: 12
+
+                ColumnLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    spacing: 6
+
+                    Label {
+                        text: "Godzina"
+                        font.pixelSize: 12
+                    }
+                    SpinBox {
+                        id: hourSpin
+                        from: 0
+                        to: 23
+                        editable: true
+                    }
+                }
+
+                ColumnLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    spacing: 6
+
+                    Label {
+                        text: "Minuta"
+                        font.pixelSize: 12
+                    }
+                    SpinBox {
+                        id: minuteSpin
+                        from: 0
+                        to: 59
+                        editable: true
+                    }
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.topMargin: 10
+                Layout.bottomMargin: 10
+                spacing: 20
+
+                Item { Layout.fillWidth: true; Layout.minimumWidth: 30 }
+
+                Button {
+                    text: "Anuluj"
+                    flat: true
+                    Material.foreground: "#DC3545"
+                    Material.background: "#FFEBEE"
+                    Material.elevation: 0
+                    Layout.preferredWidth: 90
+                    onClicked: dateTimePopup.close()
+                }
+                Button {
+                    text: "Dodaj"
+                    flat: true
+                    Material.foreground: "#1976D2"
+                    Material.background: "#E3F2FD"
+                    Material.elevation: 0
+                    Layout.preferredWidth: 90
+                    onClicked: root.applyPickedDateTime()
+                }
+
+                Item { Layout.fillWidth: true; Layout.minimumWidth: 30 }
             }
         }
     }
