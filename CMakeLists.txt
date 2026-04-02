@@ -50,6 +50,7 @@ qt_add_qml_module(PlaneManager
         qml/AirportList.qml
         qml/FlightList.qml
     RESOURCES
+        assets/airports.json
         assets/airbus.png
         assets/boeing.png
         assets/embraer.png

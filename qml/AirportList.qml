@@ -13,6 +13,8 @@ Item {
     property string editNameValue: ""
     property string editLatValue: ""
     property string editLonValue: ""
+    property string mapExtractStatus: ""
+    property bool applyingSuggestion: false
 
     // qmllint disable unqualified
     readonly property var service: airportService 
@@ -23,7 +25,59 @@ Item {
         listView.model = root.service.getAllAirports();
     }
 
-    Component.onCompleted: root.refreshAirports()
+    function fillFromMapsUrl(urlValue) {
+        var parsed = root.service.parseGoogleMapsUrl(urlValue)
+        if (parsed.ok) {
+            if (parsed.name && parsed.name.length > 0) {
+                nameInput.text = parsed.name
+            }
+            latInput.text = Number(parsed.latitude).toFixed(7)
+            lonInput.text = Number(parsed.longitude).toFixed(7)
+            if (parsed.icaoSuggested && parsed.icaoSuggested.length > 0) {
+                icaoInput.text = parsed.icaoSuggested
+                var distText = parsed.distanceKm !== undefined ? Number(parsed.distanceKm).toFixed(2) + " km" : "?"
+                mapExtractStatus = "Pobrano dane z linku. Zaproponowano ICAO: " + parsed.icaoSuggested + " (" + distText + ")"
+            } else {
+                mapExtractStatus = "Pobrano nazwe i wspolrzedne z linku."
+            }
+        } else {
+            mapExtractStatus = parsed.error ? parsed.error : "Nie udalo sie odczytac danych z linku."
+        }
+    }
+
+    function updateNameSuggestions() {
+        if (applyingSuggestion) {
+            return
+        }
+
+        var query = nameInput.text
+        suggestionModel.clear()
+        if (!query || query.trim().length < 2) {
+            suggestionPopup.visible = false
+            return
+        }
+
+        var found = root.service.searchReferenceAirportsByName(query, 8)
+        for (var i = 0; i < found.length; ++i) {
+            suggestionModel.append(found[i])
+        }
+        suggestionPopup.visible = suggestionModel.count > 0
+    }
+
+    function applySuggestion(item) {
+        applyingSuggestion = true
+        nameInput.text = item.name
+        icaoInput.text = item.icao
+        latInput.text = Number(item.latitude).toFixed(7)
+        lonInput.text = Number(item.longitude).toFixed(7)
+        mapExtractStatus = "Ustawiono dane z podpowiedzi: " + item.icao
+        suggestionPopup.visible = false
+        applyingSuggestion = false
+    }
+
+    Component.onCompleted: {
+        root.refreshAirports()
+    }
 
     // Jasne tlo
     Rectangle {
@@ -165,17 +219,91 @@ Item {
         ColumnLayout {
             anchors.fill: parent
             spacing: 20
-            
-            TextField {
-                id: icaoInput
-                placeholderText: "Kod ICAO (np. EPWA)"
-                Layout.fillWidth: true; font.pixelSize: 16
-                maximumLength: 4 // ICAO ma zawsze 4 znaki
+
+            ListModel {
+                id: suggestionModel
             }
+
+            TextField {
+                id: mapsUrlInput
+                placeholderText: "Link Google Maps"
+                Layout.fillWidth: true
+                font.pixelSize: 15
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 10
+
+                Button {
+                    text: "Pobierz dane z linku"
+                    Layout.fillWidth: true
+                    onClicked: root.fillFromMapsUrl(mapsUrlInput.text)
+                }
+
+                Button {
+                    text: "Otworz Google Maps"
+                    Layout.fillWidth: true
+                    onClicked: {
+                        var urlToOpen = mapsUrlInput.text.length > 0 ? mapsUrlInput.text : "https://www.google.com/maps"
+                        Qt.openUrlExternally(urlToOpen)
+                    }
+                }
+            }
+
+            Label {
+                text: root.mapExtractStatus
+                visible: text.length > 0
+                color: text.startsWith("Pobrano") ? "#2E7D32" : "#C62828"
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+                font.pixelSize: 12
+            }
+            
             TextField {
                 id: nameInput
                 placeholderText: "Pełna nazwa lotniska"
                 Layout.fillWidth: true; font.pixelSize: 16
+                onTextChanged: root.updateNameSuggestions()
+            }
+
+            TextField {
+                id: icaoInput
+                placeholderText: "Kod ICAO (np. EPWA)"
+                Layout.fillWidth: true; font.pixelSize: 16
+                maximumLength: 4
+            }
+
+            Rectangle {
+                id: suggestionPopup
+                Layout.fillWidth: true
+                visible: false
+                color: "#FFFFFF"
+                border.color: "#DADCE0"
+                radius: 6
+                implicitHeight: Math.min(200, suggestionList.contentHeight + 10)
+
+                ListView {
+                    id: suggestionList
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    clip: true
+                    model: suggestionModel
+                    delegate: ItemDelegate {
+                        required property string name
+                        required property string icao
+                        required property double latitude
+                        required property double longitude
+                        width: suggestionList.width
+                        text: name + " (" + icao + ")"
+                        onClicked: root.applySuggestion({
+                                                           name: name,
+                                                           icao: icao,
+                                                           latitude: latitude,
+                                                           longitude: longitude
+                                                       })
+                    }
+                }
             }
             
             // Pola na wspolrzedne ukladamy obok siebie
@@ -208,7 +336,17 @@ Item {
                 nameInput.clear();
                 latInput.clear();
                 lonInput.clear();
+                mapsUrlInput.clear();
+                root.mapExtractStatus = "";
+                suggestionModel.clear();
+                suggestionPopup.visible = false
             }
+        }
+
+        onOpened: {
+            root.mapExtractStatus = ""
+            suggestionModel.clear()
+            suggestionPopup.visible = false
         }
     }
 
@@ -226,15 +364,16 @@ Item {
             spacing: 20
 
             TextField {
+                id: editNameInput
+                placeholderText: root.editNameValue
+                Layout.fillWidth: true; font.pixelSize: 16
+            }
+
+            TextField {
                 id: editIcaoInput
                 placeholderText: root.editIcaoValue
                 Layout.fillWidth: true; font.pixelSize: 16
                 maximumLength: 4
-            }
-            TextField {
-                id: editNameInput
-                placeholderText: root.editNameValue
-                Layout.fillWidth: true; font.pixelSize: 16
             }
 
             RowLayout {
