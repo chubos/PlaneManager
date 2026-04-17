@@ -24,6 +24,13 @@ Item {
 
     Component.onCompleted: root.refreshPlanes()
 
+    Timer {
+        interval: 60000
+        running: true
+        repeat: true
+        onTriggered: root.refreshPlanes()
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "#FFFFFF"
@@ -205,7 +212,7 @@ Item {
             }
             ComboBox {
                 id: statusInput
-                model: ["Dostepny", "W serwisie", "W locie"]
+                model: ["Dostepny", "W serwisie"]
                 Layout.fillWidth: true; font.pixelSize: 16
             }
         }
@@ -244,7 +251,7 @@ Item {
             }
             ComboBox {
                 id: editStatusInput
-                model: ["Dostepny", "W serwisie", "W locie"]
+                model: ["Dostepny", "W serwisie"]
                 Layout.fillWidth: true; font.pixelSize: 16
             }
         }

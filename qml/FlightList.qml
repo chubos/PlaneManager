@@ -16,6 +16,7 @@ Item {
     property string editEndValue: ""
     property var pickerTargetField: null
     property date pickerSelectedDate: new Date()
+    property string flightFormErrorMessage: ""
 
     // qmllint disable unqualified
     readonly property var service: flightService 
@@ -34,7 +35,9 @@ Item {
         // qmllint enable unqualified
         var pModel = [];
         for (var i = 0; i < pData.length; i++) {
-            pModel.push({ text: pData[i].brand + " " + pData[i].model, value: pData[i].id });
+            if (pData[i].status !== "W serwisie") {
+                pModel.push({ text: pData[i].brand + " " + pData[i].model, value: pData[i].id });
+            }
         }
         planeCombo.model = pModel;
         editPlaneCombo.model = pModel;
@@ -145,6 +148,13 @@ Item {
         root.loadDropdowns();
     }
 
+    Timer {
+        interval: 60000
+        running: true
+        repeat: true
+        onTriggered: root.refreshFlights()
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "#FFFFFF"
@@ -228,6 +238,21 @@ Item {
                             text: flightDelegate.modelData.planeName
                             font.pixelSize: 18; font.bold: true; color: "#212529"
                         }
+                        Rectangle {
+                            radius: 10
+                            implicitHeight: 24
+                            implicitWidth: statusText.implicitWidth + 20
+                            color: flightDelegate.modelData.statusColor ? flightDelegate.modelData.statusColor : "#2E7D32"
+
+                            Label {
+                                id: statusText
+                                anchors.centerIn: parent
+                                text: flightDelegate.modelData.status ? flightDelegate.modelData.status : "Zaplanowany"
+                                font.pixelSize: 12
+                                font.bold: true
+                                color: "white"
+                            }
+                        }
                         Label {
                             text: "Trasa: " + flightDelegate.modelData.depIcao + " ➔ " + flightDelegate.modelData.arrIcao
                             font.pixelSize: 14; font.bold: true; color: Material.accent
@@ -292,7 +317,6 @@ Item {
     Dialog {
         id: addDialog
         title: "Kreator Nowego Lotu"
-        standardButtons: Dialog.Ok | Dialog.Cancel
         anchors.centerIn: parent
         modal: true
         width: Math.min(root.width - 40, 860)
@@ -353,9 +377,51 @@ Item {
                     onClicked: root.openDateTimePicker(endInput, endInput.text)
                 }
             }
+
+            Label {
+                text: root.flightFormErrorMessage
+                visible: text.length > 0
+                color: "#C62828"
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.topMargin: 8
+
+                Item { Layout.fillWidth: true }
+
+                Button {
+                    text: "Anuluj"
+                    flat: true
+                    onClicked: addDialog.close()
+                }
+
+                Button {
+                    text: "Dodaj"
+                    Material.background: Material.accent
+                    Material.foreground: "white"
+                    onClicked: {
+                        var startIso = root.toIsoDateTime(startInput.text);
+                        var endIso = root.toIsoDateTime(endInput.text);
+
+                        if (root.service.addFlight(planeCombo.currentValue, depCombo.currentValue, arrCombo.currentValue, startIso, endIso)) {
+                            root.refreshFlights();
+                            root.flightFormErrorMessage = "";
+                            startInput.clear();
+                            endInput.clear();
+                            addDialog.close();
+                        } else {
+                            root.flightFormErrorMessage = "Samolot jest już zajęty albo znajduje się w serwisie. Wybierz inny termin lub maszynę.";
+                        }
+                    }
+                }
+            }
         }
 
         onOpened: {
+            root.flightFormErrorMessage = ""
             if (startInput.text.length === 0) {
                 startInput.text = root.formatDisplayDateTime(new Date());
             }
@@ -366,24 +432,12 @@ Item {
             }
         }
 
-        onAccepted: {
-            var startIso = root.toIsoDateTime(startInput.text);
-            var endIso = root.toIsoDateTime(endInput.text);
-
-            // planeCombo.currentValue zwroci nam bezposrednio ID samolotu!
-            if (root.service.addFlight(planeCombo.currentValue, depCombo.currentValue, arrCombo.currentValue, startIso, endIso)) {
-                root.refreshFlights();
-                startInput.clear();
-                endInput.clear();
-            }
-        }
     }
 
     // --- Dialog Edycji ---
     Dialog {
         id: editDialog
         title: "Edycja Lotu"
-        standardButtons: Dialog.Ok | Dialog.Cancel
         anchors.centerIn: parent
         modal: true
         width: Math.min(root.width - 40, 860)
@@ -444,25 +498,57 @@ Item {
                     onClicked: root.openDateTimePicker(editEndInput, editEndInput.text)
                 }
             }
-        }
 
-        onAccepted: {
-            var startText = editStartInput.text.length > 0 ? editStartInput.text : root.editStartValue;
-            var endText = editEndInput.text.length > 0 ? editEndInput.text : root.editEndValue;
-            var startIso = root.toIsoDateTime(startText);
-            var endIso = root.toIsoDateTime(endText);
+            Label {
+                text: root.flightFormErrorMessage
+                visible: text.length > 0
+                color: "#C62828"
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
 
-            if (root.service.updateFlight(root.editFlightId,
-                                          editPlaneCombo.currentValue,
-                                          editDepCombo.currentValue,
-                                          editArrCombo.currentValue,
-                                          startIso,
-                                          endIso)) {
-                root.refreshFlights();
-                editStartInput.clear();
-                editEndInput.clear();
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.topMargin: 8
+
+                Item { Layout.fillWidth: true }
+
+                Button {
+                    text: "Anuluj"
+                    flat: true
+                    onClicked: editDialog.close()
+                }
+
+                Button {
+                    text: "Zapisz"
+                    Material.background: Material.accent
+                    Material.foreground: "white"
+                    onClicked: {
+                        var startText = editStartInput.text.length > 0 ? editStartInput.text : root.editStartValue;
+                        var endText = editEndInput.text.length > 0 ? editEndInput.text : root.editEndValue;
+                        var startIso = root.toIsoDateTime(startText);
+                        var endIso = root.toIsoDateTime(endText);
+
+                        if (root.service.updateFlight(root.editFlightId,
+                                                      editPlaneCombo.currentValue,
+                                                      editDepCombo.currentValue,
+                                                      editArrCombo.currentValue,
+                                                      startIso,
+                                                      endIso)) {
+                            root.refreshFlights();
+                            root.flightFormErrorMessage = "";
+                            editStartInput.clear();
+                            editEndInput.clear();
+                            editDialog.close();
+                        } else {
+                            root.flightFormErrorMessage = "Samolot jest już zajęty albo znajduje się w serwisie. Wybierz inny termin lub maszynę.";
+                        }
+                    }
+                }
             }
         }
+
+        onOpened: root.flightFormErrorMessage = ""
     }
 
     Popup {

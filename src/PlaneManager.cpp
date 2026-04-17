@@ -20,7 +20,21 @@ bool PlaneManager::addPlane(const QString &brand, const QString &model, const QS
 
 QVariantList PlaneManager::getAllPlanes() {
     QVariantList list;
-    QSqlQuery query("SELECT id, brand, model, status FROM planes ORDER BY id DESC");
+    QSqlQuery query(
+        "SELECT p.id, p.brand, p.model, "
+        "CASE "
+        "    WHEN EXISTS ("
+        "        SELECT 1 FROM flights f "
+        "        WHERE f.plane_id = p.id "
+        "          AND f.start_time <= CURRENT_TIMESTAMP "
+        "          AND f.end_time >= CURRENT_TIMESTAMP"
+        "    ) THEN 'W locie' "
+        "    WHEN LOWER(COALESCE(p.status, '')) = 'w locie' THEN 'Dostepny' "
+        "    ELSE p.status "
+        "END AS status "
+        "FROM planes p "
+        "ORDER BY p.id DESC"
+    );
 
     while (query.next()) {
         QVariantMap map;
