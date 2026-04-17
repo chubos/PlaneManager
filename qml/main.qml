@@ -68,6 +68,15 @@ ApplicationWindow {
                     onClicked: stackView.replace("FlightList.qml")
                 }
 
+                Button {
+                    text: "Mapa"
+                    Layout.fillWidth: true
+                    Material.elevation: 0
+                    flat: stackView.currentItem && stackView.currentItem.objectName !== "mapView"
+                    font.pixelSize: 15
+                    onClicked: stackView.replace("MapView.qml")
+                }
+
                 Item { Layout.fillHeight: true } // Zapelniacz spychajacy do gory
             }
 

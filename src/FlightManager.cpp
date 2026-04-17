@@ -121,6 +121,8 @@ QVariantList FlightManager::getAllFlights() {
     // Pobieramy ID, ale tez czytelne nazwy dzieki JOIN
     QString sql = "SELECT f.id, p.brand, p.model, "
                   "dep.icao_code as dep_icao, arr.icao_code as arr_icao, "
+                  "dep.latitude as dep_latitude, dep.longitude as dep_longitude, "
+                  "arr.latitude as arr_latitude, arr.longitude as arr_longitude, "
                   "f.start_time, f.end_time, "
                   "f.plane_id, f.departure_airport_id, f.arrival_airport_id "
                   "FROM flights f "
@@ -156,8 +158,14 @@ QVariantList FlightManager::getAllFlights() {
         map["planeName"] = query.value("brand").toString() + " " + query.value("model").toString();
         map["depIcao"] = query.value("dep_icao");
         map["arrIcao"] = query.value("arr_icao");
+        map["depLatitude"] = query.value("dep_latitude");
+        map["depLongitude"] = query.value("dep_longitude");
+        map["arrLatitude"] = query.value("arr_latitude");
+        map["arrLongitude"] = query.value("arr_longitude");
         map["startTime"] = toLocalForDisplay(query.value("start_time")).toString("dd.MM.yyyy HH:mm");
         map["endTime"] = toLocalForDisplay(query.value("end_time")).toString("dd.MM.yyyy HH:mm");
+        map["startTimeUtcMs"] = toUtcForCompare(query.value("start_time")).toMSecsSinceEpoch();
+        map["endTimeUtcMs"] = toUtcForCompare(query.value("end_time")).toMSecsSinceEpoch();
         map["status"] = statusText;
         map["statusColor"] = statusColor;
         
