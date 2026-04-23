@@ -12,6 +12,12 @@ Item {
     property string editBrandValue: ""
     property string editModelValue: ""
     property string editStatusValue: ""
+    property int editThrustValue: 0
+    property double editLengthValue: 0
+    property int editNumberOfEnginesValue: 1
+    property int editPassengersValue: 0
+    property double editMaxSpeedValue: 0
+    property double editMaxAltitudeValue: 0
 
     // qmllint disable unqualified
     readonly property var service: planeService 
@@ -175,10 +181,22 @@ Item {
                             root.editBrandValue = planeDelegate.modelData.brand ? planeDelegate.modelData.brand : ""
                             root.editModelValue = planeDelegate.modelData.model ? planeDelegate.modelData.model : ""
                             root.editStatusValue = planeDelegate.modelData.status ? planeDelegate.modelData.status : "Dostepny"
+                            root.editThrustValue = planeDelegate.modelData.thrust ? planeDelegate.modelData.thrust : 0
+                            root.editLengthValue = planeDelegate.modelData.length ? planeDelegate.modelData.length : 0
+                            root.editNumberOfEnginesValue = planeDelegate.modelData.numberOfEngines ? planeDelegate.modelData.numberOfEngines : 1
+                            root.editPassengersValue = planeDelegate.modelData.passengers ? planeDelegate.modelData.passengers : 0
+                            root.editMaxSpeedValue = planeDelegate.modelData.maxSpeed ? planeDelegate.modelData.maxSpeed : 0
+                            root.editMaxAltitudeValue = planeDelegate.modelData.maxAltitude ? planeDelegate.modelData.maxAltitude : 0
                             editBrandInput.clear()
                             editModelInput.clear()
                             var statusIndex = editStatusInput.model.indexOf(root.editStatusValue)
                             editStatusInput.currentIndex = statusIndex >= 0 ? statusIndex : 0
+                            editThrustInput.value = root.editThrustValue
+                            editLengthInput.value = root.editLengthValue
+                            editNumberOfEnginesInput.value = root.editNumberOfEnginesValue
+                            editPassengersInput.value = root.editPassengersValue
+                            editMaxSpeedInput.value = root.editMaxSpeedValue
+                            editMaxAltitudeInput.value = root.editMaxAltitudeValue
                             editDialog.open();
                         }
                     }
@@ -194,34 +212,134 @@ Item {
         standardButtons: Dialog.Ok | Dialog.Cancel
         anchors.centerIn: parent
         modal: true
-        width: 400
+        width: 500
 
-        ColumnLayout {
+        ScrollView {
             anchors.fill: parent
-            spacing: 20
+            contentWidth: addColumn.width
             
-            TextField {
-                id: brandInput
-                placeholderText: "Marka (np. Airbus)"
-                Layout.fillWidth: true; font.pixelSize: 16
-            }
-            TextField {
-                id: modelInput
-                placeholderText: "Model (np. A320)"
-                Layout.fillWidth: true; font.pixelSize: 16
-            }
-            ComboBox {
-                id: statusInput
-                model: ["Dostepny", "W serwisie"]
-                Layout.fillWidth: true; font.pixelSize: 16
+            ColumnLayout {
+                id: addColumn
+                width: addDialog.width - 40
+                spacing: 15
+                
+                Label { text: "Podstawowe dane"; font.bold: true; font.pixelSize: 14; color: "#212529" }
+                TextField {
+                    id: brandInput
+                    placeholderText: "Marka (np. Airbus)"
+                    Layout.fillWidth: true; font.pixelSize: 16
+                }
+                TextField {
+                    id: modelInput
+                    placeholderText: "Model (np. A320)"
+                    Layout.fillWidth: true; font.pixelSize: 16
+                }
+                ComboBox {
+                    id: statusInput
+                    model: ["Dostepny", "W serwisie"]
+                    Layout.fillWidth: true; font.pixelSize: 16
+                }
+                
+                Label { text: "Parametry techniczne"; font.bold: true; font.pixelSize: 14; color: "#212529"; Layout.topMargin: 10 }
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 15
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Siła ciągu (kN)"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: thrustInput
+                            from: 0
+                            to: 999999
+                            value: 0
+                            Layout.fillWidth: true
+                        }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Długość (m)"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: lengthInput
+                            from: 0
+                            to: 100000
+                            value: 0
+                            stepSize: 100
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
+                
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 15
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Liczba silników"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: numberOfEnginesInput
+                            from: 1
+                            to: 8
+                            value: 1
+                            Layout.fillWidth: true
+                        }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Pasażerowie"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: passengersInput
+                            from: 0
+                            to: 900
+                            value: 0
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
+                
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 15
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Max prędkość (km/h)"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: maxSpeedInput
+                            from: 0
+                            to: 1000000
+                            value: 0
+                            stepSize: 100
+                            Layout.fillWidth: true
+                        }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Max wysokość (km)"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: maxAltitudeInput
+                            from: 0
+                            to: 100000
+                            value: 0
+                            stepSize: 100
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
             }
         }
 
         onAccepted: {
-            if (root.service.addPlane(brandInput.text, modelInput.text, statusInput.currentText)) {
+            if (root.service.addPlane(brandInput.text, modelInput.text, statusInput.currentText,
+                                       thrustInput.value, lengthInput.value / 100, numberOfEnginesInput.value,
+                                       passengersInput.value, maxSpeedInput.value / 100, maxAltitudeInput.value / 100)) {
                 root.refreshPlanes();
                 brandInput.clear();
                 modelInput.clear();
+                thrustInput.value = 0
+                lengthInput.value = 0
+                numberOfEnginesInput.value = 1
+                passengersInput.value = 0
+                maxSpeedInput.value = 0
+                maxAltitudeInput.value = 0
             }
         }
     }
@@ -233,33 +351,127 @@ Item {
         standardButtons: Dialog.Ok | Dialog.Cancel
         anchors.centerIn: parent
         modal: true
-        width: 400
+        width: 500
 
-        ColumnLayout {
+        ScrollView {
             anchors.fill: parent
-            spacing: 20
+            contentWidth: editColumn.width
+            
+            ColumnLayout {
+                id: editColumn
+                width: editDialog.width - 40
+                spacing: 15
 
-            TextField {
-                id: editBrandInput
-                placeholderText: root.editBrandValue
-                Layout.fillWidth: true; font.pixelSize: 16
-            }
-            TextField {
-                id: editModelInput
-                placeholderText: root.editModelValue
-                Layout.fillWidth: true; font.pixelSize: 16
-            }
-            ComboBox {
-                id: editStatusInput
-                model: ["Dostepny", "W serwisie"]
-                Layout.fillWidth: true; font.pixelSize: 16
+                Label { text: "Podstawowe dane"; font.bold: true; font.pixelSize: 14; color: "#212529" }
+                TextField {
+                    id: editBrandInput
+                    placeholderText: root.editBrandValue
+                    Layout.fillWidth: true; font.pixelSize: 16
+                }
+                TextField {
+                    id: editModelInput
+                    placeholderText: root.editModelValue
+                    Layout.fillWidth: true; font.pixelSize: 16
+                }
+                ComboBox {
+                    id: editStatusInput
+                    model: ["Dostepny", "W serwisie"]
+                    Layout.fillWidth: true; font.pixelSize: 16
+                }
+                
+                Label { text: "Parametry techniczne"; font.bold: true; font.pixelSize: 14; color: "#212529"; Layout.topMargin: 10 }
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 15
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Siła ciągu (kN)"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: editThrustInput
+                            from: 0
+                            to: 999999
+                            value: 0
+                            Layout.fillWidth: true
+                        }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Długość (m)"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: editLengthInput
+                            from: 0
+                            to: 100000
+                            value: 0
+                            stepSize: 100
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
+                
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 15
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Liczba silników"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: editNumberOfEnginesInput
+                            from: 1
+                            to: 8
+                            value: 1
+                            Layout.fillWidth: true
+                        }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Pasażerowie"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: editPassengersInput
+                            from: 0
+                            to: 900
+                            value: 0
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
+                
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 15
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Max prędkość (km/h)"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: editMaxSpeedInput
+                            from: 0
+                            to: 1000000
+                            value: 0
+                            stepSize: 100
+                            Layout.fillWidth: true
+                        }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label { text: "Max wysokość (km)"; font.pixelSize: 12 }
+                        SpinBox {
+                            id: editMaxAltitudeInput
+                            from: 0
+                            to: 100000
+                            value: 0
+                            stepSize: 100
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
             }
         }
 
         onAccepted: {
             var brandToSave = editBrandInput.text.length > 0 ? editBrandInput.text : root.editBrandValue
             var modelToSave = editModelInput.text.length > 0 ? editModelInput.text : root.editModelValue
-            if (root.service.updatePlane(root.editPlaneId, brandToSave, modelToSave, editStatusInput.currentText)) {
+            if (root.service.updatePlane(root.editPlaneId, brandToSave, modelToSave, editStatusInput.currentText,
+                                          editThrustInput.value, editLengthInput.value / 100, editNumberOfEnginesInput.value,
+                                          editPassengersInput.value, editMaxSpeedInput.value / 100, editMaxAltitudeInput.value / 100)) {
                 root.refreshPlanes();
                 editBrandInput.clear();
                 editModelInput.clear();

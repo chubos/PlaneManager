@@ -11,8 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 # Znajdz potrzebne pakiety
-set(CMAKE_PREFIX_PATH "C:/Qt/6.10.2/mingw_64" CACHE PATH "Qt path")
-find_package(Qt6 REQUIRED COMPONENTS Quick Widgets Sql Network QuickControls2)
+set(CMAKE_PREFIX_PATH "C:/Qt/6.10.3/mingw_64" CACHE PATH "Qt path" FORCE)
+find_package(Qt6 REQUIRED COMPONENTS Quick Widgets Sql Network QuickControls2 Positioning Location)
 set(PostgreSQL_ROOT "C:/Program Files/PostgreSQL/18" CACHE PATH "PostgreSQL path")
 find_package(PostgreSQL REQUIRED)
 
@@ -70,5 +70,7 @@ target_link_libraries(PlaneManager PRIVATE
     Qt6::Sql 
     Qt6::Network
     Qt6::QuickControls2
+    Qt6::Positioning
+    Qt6::Location
     PostgreSQL::PostgreSQL
 )
