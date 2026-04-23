@@ -159,6 +159,16 @@ Item {
                     Item { Layout.fillWidth: true } 
 
                     Button {
+                        text: "Szczegóły"
+                        flat: true
+                        Material.foreground: "#059669"
+                        Material.background: "#ECFDF5"
+                        Material.elevation: 0
+                        onClicked: {
+                            stackView.push("PlaneDetail.qml", {planeId: planeDelegate.modelData.id})
+                        }
+                    }
+                    Button {
                         text: "Usuń"
                         flat: true
                         Material.foreground: "#DC3545" 
@@ -191,12 +201,6 @@ Item {
                             editModelInput.clear()
                             var statusIndex = editStatusInput.model.indexOf(root.editStatusValue)
                             editStatusInput.currentIndex = statusIndex >= 0 ? statusIndex : 0
-                            editThrustInput.value = root.editThrustValue
-                            editLengthInput.value = root.editLengthValue
-                            editNumberOfEnginesInput.value = root.editNumberOfEnginesValue
-                            editPassengersInput.value = root.editPassengersValue
-                            editMaxSpeedInput.value = root.editMaxSpeedValue
-                            editMaxAltitudeInput.value = root.editMaxAltitudeValue
                             editDialog.open();
                         }
                     }
@@ -212,7 +216,7 @@ Item {
         standardButtons: Dialog.Ok | Dialog.Cancel
         anchors.centerIn: parent
         modal: true
-        width: 500
+        width: 360
 
         ScrollView {
             anchors.fill: parent
@@ -220,107 +224,114 @@ Item {
             
             ColumnLayout {
                 id: addColumn
-                width: addDialog.width - 40
-                spacing: 15
+                width: addDialog.width - 30
+                spacing: 10
                 
-                Label { text: "Podstawowe dane"; font.bold: true; font.pixelSize: 14; color: "#212529" }
+                Label { text: "Podstawowe dane"; font.bold: true; font.pixelSize: 12; color: "#212529" }
                 TextField {
                     id: brandInput
                     placeholderText: "Marka (np. Airbus)"
-                    Layout.fillWidth: true; font.pixelSize: 16
+                    Layout.fillWidth: true
+                    font.pixelSize: 12
                 }
                 TextField {
                     id: modelInput
                     placeholderText: "Model (np. A320)"
-                    Layout.fillWidth: true; font.pixelSize: 16
+                    Layout.fillWidth: true
+                    font.pixelSize: 12
                 }
                 ComboBox {
                     id: statusInput
                     model: ["Dostepny", "W serwisie"]
-                    Layout.fillWidth: true; font.pixelSize: 16
+                    Layout.fillWidth: true
+                    font.pixelSize: 12
                 }
                 
-                Label { text: "Parametry techniczne"; font.bold: true; font.pixelSize: 14; color: "#212529"; Layout.topMargin: 10 }
+                Label { text: "Parametry techniczne"; font.bold: true; font.pixelSize: 12; color: "#212529"; Layout.topMargin: 8 }
+                
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 15
+                    spacing: 6
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Siła ciągu (kN)"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Siła ciągu (kN)"; font.pixelSize: 10 }
+                        TextField {
                             id: thrustInput
-                            from: 0
-                            to: 999999
-                            value: 0
+                            text: "0"
+                            inputMethodHints: Qt.ImhDigitsOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Długość (m)"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Długość (m)"; font.pixelSize: 10 }
+                        TextField {
                             id: lengthInput
-                            from: 0
-                            to: 100000
-                            value: 0
-                            stepSize: 100
+                            text: "0.00"
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                 }
                 
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 15
+                    spacing: 6
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Liczba silników"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Liczba silników"; font.pixelSize: 10 }
+                        TextField {
                             id: numberOfEnginesInput
-                            from: 1
-                            to: 8
-                            value: 1
+                            text: "1"
+                            inputMethodHints: Qt.ImhDigitsOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Pasażerowie"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Pasażerowie"; font.pixelSize: 10 }
+                        TextField {
                             id: passengersInput
-                            from: 0
-                            to: 900
-                            value: 0
+                            text: "0"
+                            inputMethodHints: Qt.ImhDigitsOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                 }
                 
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 15
+                    spacing: 6
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Max prędkość (km/h)"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Max prędkość (km/h)"; font.pixelSize: 10 }
+                        TextField {
                             id: maxSpeedInput
-                            from: 0
-                            to: 1000000
-                            value: 0
-                            stepSize: 100
+                            text: "0.00"
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Max wysokość (km)"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Max wysokość (km)"; font.pixelSize: 10 }
+                        TextField {
                             id: maxAltitudeInput
-                            from: 0
-                            to: 100000
-                            value: 0
-                            stepSize: 100
+                            text: "0.00"
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                 }
@@ -328,18 +339,24 @@ Item {
         }
 
         onAccepted: {
+            var thrustVal = parseInt(thrustInput.text) || 0
+            var lengthVal = parseFloat(lengthInput.text) || 0
+            var enginesVal = parseInt(numberOfEnginesInput.text) || 1
+            var passengersVal = parseInt(passengersInput.text) || 0
+            var speedVal = parseFloat(maxSpeedInput.text) || 0
+            var altitudeVal = parseFloat(maxAltitudeInput.text) || 0
+
             if (root.service.addPlane(brandInput.text, modelInput.text, statusInput.currentText,
-                                       thrustInput.value, lengthInput.value / 100, numberOfEnginesInput.value,
-                                       passengersInput.value, maxSpeedInput.value / 100, maxAltitudeInput.value / 100)) {
+                                       thrustVal, lengthVal, enginesVal, passengersVal, speedVal, altitudeVal)) {
                 root.refreshPlanes();
                 brandInput.clear();
                 modelInput.clear();
-                thrustInput.value = 0
-                lengthInput.value = 0
-                numberOfEnginesInput.value = 1
-                passengersInput.value = 0
-                maxSpeedInput.value = 0
-                maxAltitudeInput.value = 0
+                thrustInput.text = "0"
+                lengthInput.text = "0.00"
+                numberOfEnginesInput.text = "1"
+                passengersInput.text = "0"
+                maxSpeedInput.text = "0.00"
+                maxAltitudeInput.text = "0.00"
             }
         }
     }
@@ -351,7 +368,7 @@ Item {
         standardButtons: Dialog.Ok | Dialog.Cancel
         anchors.centerIn: parent
         modal: true
-        width: 500
+        width: 360
 
         ScrollView {
             anchors.fill: parent
@@ -359,107 +376,114 @@ Item {
             
             ColumnLayout {
                 id: editColumn
-                width: editDialog.width - 40
-                spacing: 15
+                width: editDialog.width - 30
+                spacing: 10
 
-                Label { text: "Podstawowe dane"; font.bold: true; font.pixelSize: 14; color: "#212529" }
+                Label { text: "Podstawowe dane"; font.bold: true; font.pixelSize: 12; color: "#212529" }
                 TextField {
                     id: editBrandInput
                     placeholderText: root.editBrandValue
-                    Layout.fillWidth: true; font.pixelSize: 16
+                    Layout.fillWidth: true
+                    font.pixelSize: 12
                 }
                 TextField {
                     id: editModelInput
                     placeholderText: root.editModelValue
-                    Layout.fillWidth: true; font.pixelSize: 16
+                    Layout.fillWidth: true
+                    font.pixelSize: 12
                 }
                 ComboBox {
                     id: editStatusInput
                     model: ["Dostepny", "W serwisie"]
-                    Layout.fillWidth: true; font.pixelSize: 16
+                    Layout.fillWidth: true
+                    font.pixelSize: 12
                 }
                 
-                Label { text: "Parametry techniczne"; font.bold: true; font.pixelSize: 14; color: "#212529"; Layout.topMargin: 10 }
+                Label { text: "Parametry techniczne"; font.bold: true; font.pixelSize: 12; color: "#212529"; Layout.topMargin: 8 }
+                
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 15
+                    spacing: 6
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Siła ciągu (kN)"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Siła ciągu (kN)"; font.pixelSize: 10 }
+                        TextField {
                             id: editThrustInput
-                            from: 0
-                            to: 999999
-                            value: 0
+                            text: root.editThrustValue
+                            inputMethodHints: Qt.ImhDigitsOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Długość (m)"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Długość (m)"; font.pixelSize: 10 }
+                        TextField {
                             id: editLengthInput
-                            from: 0
-                            to: 100000
-                            value: 0
-                            stepSize: 100
+                            text: root.editLengthValue.toFixed(2)
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                 }
                 
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 15
+                    spacing: 6
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Liczba silników"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Liczba silników"; font.pixelSize: 10 }
+                        TextField {
                             id: editNumberOfEnginesInput
-                            from: 1
-                            to: 8
-                            value: 1
+                            text: root.editNumberOfEnginesValue
+                            inputMethodHints: Qt.ImhDigitsOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Pasażerowie"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Pasażerowie"; font.pixelSize: 10 }
+                        TextField {
                             id: editPassengersInput
-                            from: 0
-                            to: 900
-                            value: 0
+                            text: root.editPassengersValue
+                            inputMethodHints: Qt.ImhDigitsOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                 }
                 
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 15
+                    spacing: 6
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Max prędkość (km/h)"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Max prędkość (km/h)"; font.pixelSize: 10 }
+                        TextField {
                             id: editMaxSpeedInput
-                            from: 0
-                            to: 1000000
-                            value: 0
-                            stepSize: 100
+                            text: root.editMaxSpeedValue.toFixed(2)
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
-                        Label { text: "Max wysokość (km)"; font.pixelSize: 12 }
-                        SpinBox {
+                        spacing: 2
+                        Label { text: "Max wysokość (km)"; font.pixelSize: 10 }
+                        TextField {
                             id: editMaxAltitudeInput
-                            from: 0
-                            to: 100000
-                            value: 0
-                            stepSize: 100
+                            text: root.editMaxAltitudeValue.toFixed(2)
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
                             Layout.fillWidth: true
+                            font.pixelSize: 11
                         }
                     }
                 }
@@ -469,9 +493,15 @@ Item {
         onAccepted: {
             var brandToSave = editBrandInput.text.length > 0 ? editBrandInput.text : root.editBrandValue
             var modelToSave = editModelInput.text.length > 0 ? editModelInput.text : root.editModelValue
+            var thrustVal = parseInt(editThrustInput.text) || 0
+            var lengthVal = parseFloat(editLengthInput.text) || 0
+            var enginesVal = parseInt(editNumberOfEnginesInput.text) || 1
+            var passengersVal = parseInt(editPassengersInput.text) || 0
+            var speedVal = parseFloat(editMaxSpeedInput.text) || 0
+            var altitudeVal = parseFloat(editMaxAltitudeInput.text) || 0
+
             if (root.service.updatePlane(root.editPlaneId, brandToSave, modelToSave, editStatusInput.currentText,
-                                          editThrustInput.value, editLengthInput.value / 100, editNumberOfEnginesInput.value,
-                                          editPassengersInput.value, editMaxSpeedInput.value / 100, editMaxAltitudeInput.value / 100)) {
+                                          thrustVal, lengthVal, enginesVal, passengersVal, speedVal, altitudeVal)) {
                 root.refreshPlanes();
                 editBrandInput.clear();
                 editModelInput.clear();
