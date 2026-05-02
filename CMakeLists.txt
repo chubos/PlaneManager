@@ -23,16 +23,10 @@ qt_policy(SET QTP0004 NEW)
 
 qt_add_executable(PlaneManager
     src/main.cpp
-    src/Flight.cpp
-    src/Plane.cpp
-    src/Airport.cpp
     src/DatabaseManager.cpp
     src/PlaneManager.cpp
     src/AirportManager.cpp
     src/FlightManager.cpp
-    include/Flight.h
-    include/Plane.h
-    include/Airport.h
     include/DatabaseManager.h
     include/PlaneManager.h
     include/AirportManager.h
