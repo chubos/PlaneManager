@@ -5,23 +5,21 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Controls.Material
 
+import "."
+
 Item {
     id: root
     objectName: "planeView"
-    property int editPlaneId: -1
-    property string editBrandValue: ""
-    property string editModelValue: ""
-    property string editStatusValue: ""
-    property int editThrustValue: 0
-    property double editLengthValue: 0
-    property int editNumberOfEnginesValue: 1
-    property int editPassengersValue: 0
-    property double editMaxSpeedValue: 0
-    property double editMaxAltitudeValue: 0
 
     // qmllint disable unqualified
     readonly property var service: planeService 
     // qmllint enable unqualified
+
+    PlaneEditDialog {
+        id: editDialog
+        service: root.service
+        onSaved: root.refreshPlanes()
+    }
 
     // Funkcja pobiera liste z C++ i wrzuca BEZPOSREDNIO do widoku
     function refreshPlanes() {
@@ -165,7 +163,12 @@ Item {
                         Material.background: "#ECFDF5"
                         Material.elevation: 0
                         onClicked: {
-                            stackView.push("PlaneDetail.qml", {planeId: planeDelegate.modelData.id})
+                            var view = root.StackView.view
+                            if (!view) {
+                                console.warn("PlaneList: StackView.view is null; cannot navigate to details")
+                                return
+                            }
+                            view.push(Qt.resolvedUrl("PlaneDetail.qml"), { planeId: planeDelegate.modelData.id })
                         }
                     }
                     Button {
@@ -187,21 +190,7 @@ Item {
                         Material.background: "#E3F2FD"
                         Material.elevation: 0
                         onClicked: {
-                            root.editPlaneId = planeDelegate.modelData.id
-                            root.editBrandValue = planeDelegate.modelData.brand ? planeDelegate.modelData.brand : ""
-                            root.editModelValue = planeDelegate.modelData.model ? planeDelegate.modelData.model : ""
-                            root.editStatusValue = planeDelegate.modelData.status ? planeDelegate.modelData.status : "Dostepny"
-                            root.editThrustValue = planeDelegate.modelData.thrust ? planeDelegate.modelData.thrust : 0
-                            root.editLengthValue = planeDelegate.modelData.length ? planeDelegate.modelData.length : 0
-                            root.editNumberOfEnginesValue = planeDelegate.modelData.numberOfEngines ? planeDelegate.modelData.numberOfEngines : 1
-                            root.editPassengersValue = planeDelegate.modelData.passengers ? planeDelegate.modelData.passengers : 0
-                            root.editMaxSpeedValue = planeDelegate.modelData.maxSpeed ? planeDelegate.modelData.maxSpeed : 0
-                            root.editMaxAltitudeValue = planeDelegate.modelData.maxAltitude ? planeDelegate.modelData.maxAltitude : 0
-                            editBrandInput.clear()
-                            editModelInput.clear()
-                            var statusIndex = editStatusInput.model.indexOf(root.editStatusValue)
-                            editStatusInput.currentIndex = statusIndex >= 0 ? statusIndex : 0
-                            editDialog.open();
+                            editDialog.openWithData(planeDelegate.modelData)
                         }
                     }
                 }
@@ -357,154 +346,6 @@ Item {
                 passengersInput.text = "0"
                 maxSpeedInput.text = "0.00"
                 maxAltitudeInput.text = "0.00"
-            }
-        }
-    }
-
-    // --- Dialog Edycji ---
-    Dialog {
-        id: editDialog
-        title: "Edycja Samolotu"
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        anchors.centerIn: parent
-        modal: true
-        width: 360
-
-        ScrollView {
-            anchors.fill: parent
-            contentWidth: editColumn.width
-            
-            ColumnLayout {
-                id: editColumn
-                width: editDialog.width - 30
-                spacing: 10
-
-                Label { text: "Podstawowe dane"; font.bold: true; font.pixelSize: 12; color: "#212529" }
-                TextField {
-                    id: editBrandInput
-                    placeholderText: root.editBrandValue
-                    Layout.fillWidth: true
-                    font.pixelSize: 12
-                }
-                TextField {
-                    id: editModelInput
-                    placeholderText: root.editModelValue
-                    Layout.fillWidth: true
-                    font.pixelSize: 12
-                }
-                ComboBox {
-                    id: editStatusInput
-                    model: ["Dostepny", "W serwisie"]
-                    Layout.fillWidth: true
-                    font.pixelSize: 12
-                }
-                
-                Label { text: "Parametry techniczne"; font.bold: true; font.pixelSize: 12; color: "#212529"; Layout.topMargin: 8 }
-                
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 6
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Siła ciągu (kN)"; font.pixelSize: 10 }
-                        TextField {
-                            id: editThrustInput
-                            text: root.editThrustValue
-                            inputMethodHints: Qt.ImhDigitsOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Długość (m)"; font.pixelSize: 10 }
-                        TextField {
-                            id: editLengthInput
-                            text: root.editLengthValue.toFixed(2)
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-                }
-                
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 6
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Liczba silników"; font.pixelSize: 10 }
-                        TextField {
-                            id: editNumberOfEnginesInput
-                            text: root.editNumberOfEnginesValue
-                            inputMethodHints: Qt.ImhDigitsOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Pasażerowie"; font.pixelSize: 10 }
-                        TextField {
-                            id: editPassengersInput
-                            text: root.editPassengersValue
-                            inputMethodHints: Qt.ImhDigitsOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-                }
-                
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 6
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Max prędkość (km/h)"; font.pixelSize: 10 }
-                        TextField {
-                            id: editMaxSpeedInput
-                            text: root.editMaxSpeedValue.toFixed(2)
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Max wysokość (km)"; font.pixelSize: 10 }
-                        TextField {
-                            id: editMaxAltitudeInput
-                            text: root.editMaxAltitudeValue.toFixed(2)
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-                }
-            }
-        }
-
-        onAccepted: {
-            var brandToSave = editBrandInput.text.length > 0 ? editBrandInput.text : root.editBrandValue
-            var modelToSave = editModelInput.text.length > 0 ? editModelInput.text : root.editModelValue
-            var thrustVal = parseInt(editThrustInput.text) || 0
-            var lengthVal = parseFloat(editLengthInput.text) || 0
-            var enginesVal = parseInt(editNumberOfEnginesInput.text) || 1
-            var passengersVal = parseInt(editPassengersInput.text) || 0
-            var speedVal = parseFloat(editMaxSpeedInput.text) || 0
-            var altitudeVal = parseFloat(editMaxAltitudeInput.text) || 0
-
-            if (root.service.updatePlane(root.editPlaneId, brandToSave, modelToSave, editStatusInput.currentText,
-                                          thrustVal, lengthVal, enginesVal, passengersVal, speedVal, altitudeVal)) {
-                root.refreshPlanes();
-                editBrandInput.clear();
-                editModelInput.clear();
             }
         }
     }

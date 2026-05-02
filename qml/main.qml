@@ -99,6 +99,12 @@ ApplicationWindow {
             // Plynne przejscie miedzy oknami
             replaceEnter: Transition { PropertyAnimation { property: "opacity"; from: 0; to: 1; duration: 200 } }
             replaceExit: Transition { PropertyAnimation { property: "opacity"; from: 1; to: 0; duration: 200 } }
+
+            // Nadpisz domyslne animacje push/pop (slajd) na proste wygaszenie
+            pushEnter: Transition { PropertyAnimation { property: "opacity"; from: 0; to: 1; duration: 200 } }
+            pushExit: Transition { PropertyAnimation { property: "opacity"; from: 1; to: 0; duration: 150 } }
+            popEnter: Transition { PropertyAnimation { property: "opacity"; from: 0; to: 1; duration: 200 } }
+            popExit: Transition { PropertyAnimation { property: "opacity"; from: 1; to: 0; duration: 150 } }
         }
     }
 }

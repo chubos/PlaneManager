@@ -48,6 +48,7 @@ qt_add_qml_module(PlaneManager
         qml/main.qml
         qml/PlaneList.qml
         qml/PlaneDetail.qml
+        qml/PlaneEditDialog.qml
         qml/AirportList.qml
         qml/FlightList.qml
         qml/MapView.qml

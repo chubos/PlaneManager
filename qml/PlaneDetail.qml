@@ -5,6 +5,10 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Controls.Material
 
+import "."
+
+// qmllint disable unqualified
+
 Item {
     id: root
     objectName: "planeDetail"
@@ -23,8 +27,13 @@ Item {
 
     // qmllint disable unqualified
     readonly property var service: planeService 
-    readonly property var stackView: parent
     // qmllint enable unqualified
+
+    PlaneEditDialog {
+        id: editDialog
+        service: root.service
+        onSaved: root.loadPlaneData()
+    }
 
     function loadPlaneData() {
         var allPlanes = root.service.getAllPlanes()
@@ -59,7 +68,12 @@ Item {
                 Material.foreground: Material.accent
                 font.pixelSize: 14
                 onClicked: {
-                    stackView.pop()
+                    var view = root.StackView.view
+                    if (!view) {
+                        console.warn("PlaneDetail: StackView.view is null; cannot pop")
+                        return
+                    }
+                    view.pop()
                 }
             }
 
@@ -67,7 +81,7 @@ Item {
                 Layout.fillWidth: true
                 spacing: 5
                 Label {
-                    text: planeData ? (planeData.brand + " " + planeData.model) : "Samolot"
+                    text: root.planeData ? (root.planeData.brand + " " + root.planeData.model) : "Samolot"
                     font.pixelSize: 32
                     font.bold: true
                     color: "#212529"
@@ -89,7 +103,7 @@ Item {
                 font.bold: true
                 font.pixelSize: 14
                 onClicked: {
-                    editDialog.open()
+                    editDialog.openWithData(root.planeData)
                 }
             }
         }
@@ -138,7 +152,7 @@ Item {
                                     font.bold: true
                                 }
                                 Label {
-                                    text: planeData ? planeData.brand : "-"
+                                    text: root.planeData ? root.planeData.brand : "-"
                                     font.pixelSize: 16
                                     color: "#212529"
                                 }
@@ -154,7 +168,7 @@ Item {
                                     font.bold: true
                                 }
                                 Label {
-                                    text: planeData ? planeData.model : "-"
+                                    text: root.planeData ? root.planeData.model : "-"
                                     font.pixelSize: 16
                                     color: "#212529"
                                 }
@@ -170,7 +184,7 @@ Item {
                                     font.bold: true
                                 }
                                 Label {
-                                    text: planeData ? ("#" + planeData.id) : "-"
+                                    text: root.planeData ? ("#" + root.planeData.id) : "-"
                                     font.pixelSize: 16
                                     color: "#212529"
                                 }
@@ -189,16 +203,16 @@ Item {
                                     implicitHeight: 32
                                     implicitWidth: 120
                                     radius: 16
-                                    color: planeData && planeData.status === "Dostepny" ? "#E8F5E9" : 
-                                           (planeData && planeData.status === "W locie" ? "#FFF3E0" : "#FFEBEE")
+                                     color: root.planeData && root.planeData.status === "Dostepny" ? "#E8F5E9" : 
+                                         (root.planeData && root.planeData.status === "W locie" ? "#FFF3E0" : "#FFEBEE")
                                     
                                     Label {
                                         anchors.centerIn: parent
-                                        text: planeData ? planeData.status : "-"
+                                         text: root.planeData ? root.planeData.status : "-"
                                         font.pixelSize: 14
                                         font.bold: true
-                                        color: planeData && planeData.status === "Dostepny" ? "#2E7D32" : 
-                                               (planeData && planeData.status === "W locie" ? "#EF6C00" : "#C62828")
+                                         color: root.planeData && root.planeData.status === "Dostepny" ? "#2E7D32" : 
+                                             (root.planeData && root.planeData.status === "W locie" ? "#EF6C00" : "#C62828")
                                     }
                                 }
                             }
@@ -239,7 +253,7 @@ Item {
                                     font.bold: true
                                 }
                                 Label {
-                                    text: planeData && planeData.thrust ? planeData.thrust.toLocaleString() : "-"
+                                    text: root.planeData && root.planeData.thrust ? root.planeData.thrust.toLocaleString() : "-"
                                     font.pixelSize: 16
                                     color: "#212529"
                                 }
@@ -255,7 +269,7 @@ Item {
                                     font.bold: true
                                 }
                                 Label {
-                                    text: planeData && planeData.length ? planeData.length.toFixed(2) : "-"
+                                    text: root.planeData && root.planeData.length ? root.planeData.length.toFixed(2) : "-"
                                     font.pixelSize: 16
                                     color: "#212529"
                                 }
@@ -271,7 +285,7 @@ Item {
                                     font.bold: true
                                 }
                                 Label {
-                                    text: planeData && planeData.numberOfEngines ? planeData.numberOfEngines : "-"
+                                    text: root.planeData && root.planeData.numberOfEngines ? root.planeData.numberOfEngines : "-"
                                     font.pixelSize: 16
                                     color: "#212529"
                                 }
@@ -287,7 +301,7 @@ Item {
                                     font.bold: true
                                 }
                                 Label {
-                                    text: planeData && planeData.passengers ? planeData.passengers : "-"
+                                    text: root.planeData && root.planeData.passengers ? root.planeData.passengers : "-"
                                     font.pixelSize: 16
                                     color: "#212529"
                                 }
@@ -303,7 +317,7 @@ Item {
                                     font.bold: true
                                 }
                                 Label {
-                                    text: planeData && planeData.maxSpeed ? planeData.maxSpeed.toFixed(2) : "-"
+                                    text: root.planeData && root.planeData.maxSpeed ? root.planeData.maxSpeed.toFixed(2) : "-"
                                     font.pixelSize: 16
                                     color: "#212529"
                                 }
@@ -319,7 +333,7 @@ Item {
                                     font.bold: true
                                 }
                                 Label {
-                                    text: planeData && planeData.maxAltitude ? planeData.maxAltitude.toFixed(2) : "-"
+                                    text: root.planeData && root.planeData.maxAltitude ? root.planeData.maxAltitude.toFixed(2) : "-"
                                     font.pixelSize: 16
                                     color: "#212529"
                                 }
@@ -333,171 +347,6 @@ Item {
         }
     }
 
-    // --- Dialog Edycji ---
-    Dialog {
-        id: editDialog
-        title: "Edycja Samolotu"
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        anchors.centerIn: parent
-        modal: true
-        width: 360
-
-        ScrollView {
-            anchors.fill: parent
-            contentWidth: editColumn.width
-
-            ColumnLayout {
-                id: editColumn
-                width: editDialog.width - 30
-                spacing: 10
-
-                Label { text: "Podstawowe dane"; font.bold: true; font.pixelSize: 12; color: "#212529" }
-                
-                TextField {
-                    id: editBrandInput
-                    placeholderText: root.editBrandValue
-                    Layout.fillWidth: true
-                    font.pixelSize: 12
-                }
-
-                TextField {
-                    id: editModelInput
-                    placeholderText: root.editModelValue
-                    Layout.fillWidth: true
-                    font.pixelSize: 12
-                }
-
-                ComboBox {
-                    id: editStatusInput
-                    model: ["Dostepny", "W serwisie"]
-                    Layout.fillWidth: true
-                    font.pixelSize: 12
-                }
-
-                Label { text: "Parametry techniczne"; font.bold: true; font.pixelSize: 12; color: "#212529"; Layout.topMargin: 8 }
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 6
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Siła ciągu (kN)"; font.pixelSize: 10 }
-                        TextField {
-                            id: editThrustInput
-                            text: root.editThrustValue
-                            inputMethodHints: Qt.ImhDigitsOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Długość (m)"; font.pixelSize: 10 }
-                        TextField {
-                            id: editLengthInput
-                            text: root.editLengthValue.toFixed(2)
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-                }
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 6
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Liczba silników"; font.pixelSize: 10 }
-                        TextField {
-                            id: editNumberOfEnginesInput
-                            text: root.editNumberOfEnginesValue
-                            inputMethodHints: Qt.ImhDigitsOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Pasażerowie"; font.pixelSize: 10 }
-                        TextField {
-                            id: editPassengersInput
-                            text: root.editPassengersValue
-                            inputMethodHints: Qt.ImhDigitsOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-                }
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 6
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Max prędkość (km/h)"; font.pixelSize: 10 }
-                        TextField {
-                            id: editMaxSpeedInput
-                            text: root.editMaxSpeedValue.toFixed(2)
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-                        Label { text: "Max wysokość (km)"; font.pixelSize: 10 }
-                        TextField {
-                            id: editMaxAltitudeInput
-                            text: root.editMaxAltitudeValue.toFixed(2)
-                            inputMethodHints: Qt.ImhFormattedNumbersOnly
-                            Layout.fillWidth: true
-                            font.pixelSize: 11
-                        }
-                    }
-                }
-            }
-        }
-
-        onAboutToHide: {
-            // Czyść wartości
-            editBrandInput.clear()
-            editModelInput.clear()
-            editThrustInput.clear()
-            editLengthInput.clear()
-            editNumberOfEnginesInput.clear()
-            editPassengersInput.clear()
-            editMaxSpeedInput.clear()
-            editMaxAltitudeInput.clear()
-        }
-
-        onAccepted: {
-            var brandToSave = editBrandInput.text.length > 0 ? editBrandInput.text : root.editBrandValue
-            var modelToSave = editModelInput.text.length > 0 ? editModelInput.text : root.editModelValue
-            var thrustValue = parseInt(editThrustInput.text) || 0
-            var lengthValue = parseFloat(editLengthInput.text) || 0
-            var enginesValue = parseInt(editNumberOfEnginesInput.text) || 1
-            var passengersValue = parseInt(editPassengersInput.text) || 0
-            var speedValue = parseFloat(editMaxSpeedInput.text) || 0
-            var altitudeValue = parseFloat(editMaxAltitudeInput.text) || 0
-
-            if (root.service.updatePlane(root.planeId, brandToSave, modelToSave, editStatusInput.currentText,
-                                          thrustValue, lengthValue, enginesValue, passengersValue, speedValue, altitudeValue)) {
-                root.loadPlaneData()
-                editDialog.close()
-            }
-        }
-    }
 }
+
+// qmllint enable unqualified
