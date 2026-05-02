@@ -278,8 +278,8 @@ Item {
                 id: suggestionPopup
                 Layout.fillWidth: true
                 visible: false
-                color: "#FFFFFF"
-                border.color: "#DADCE0"
+                color: "#2C2C2C"
+                border.color: "#444444"
                 radius: 6
                 implicitHeight: Math.min(200, suggestionList.contentHeight + 10)
 
@@ -296,6 +296,7 @@ Item {
                         required property double longitude
                         width: suggestionList.width
                         text: name + " (" + icao + ")"
+                        Material.foreground: "#FFFFFF"
                         onClicked: root.applySuggestion({
                                                            name: name,
                                                            icao: icao,
