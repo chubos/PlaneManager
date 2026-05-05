@@ -201,52 +201,56 @@ Item {
     // --- Dialog Dodawania ---
     Dialog {
         id: addDialog
-        title: "Rejestracja Nowego Samolotu"
+        title: "Dodaj Nowy Samolot"
         standardButtons: Dialog.Ok | Dialog.Cancel
         anchors.centerIn: parent
         modal: true
-        width: 360
+        width: 520
 
         ScrollView {
+            id: addScroll
             anchors.fill: parent
-            contentWidth: addColumn.width
-            
+            padding: 15
+            contentWidth: addScroll.availableWidth
+
             ColumnLayout {
                 id: addColumn
-                width: addDialog.width - 30
+                width: addScroll.availableWidth
                 spacing: 10
-                
+
                 Label { text: "Podstawowe dane"; font.bold: true; font.pixelSize: 12; color: "#212529" }
+
                 TextField {
-                    id: brandInput
+                    id: addBrandInput
                     placeholderText: "Marka (np. Airbus)"
                     Layout.fillWidth: true
                     font.pixelSize: 12
                 }
                 TextField {
-                    id: modelInput
+                    id: addModelInput
                     placeholderText: "Model (np. A320)"
                     Layout.fillWidth: true
                     font.pixelSize: 12
                 }
                 ComboBox {
-                    id: statusInput
+                    id: addStatusInput
                     model: ["Dostepny", "W serwisie"]
                     Layout.fillWidth: true
                     font.pixelSize: 12
                 }
-                
+
                 Label { text: "Parametry techniczne"; font.bold: true; font.pixelSize: 12; color: "#212529"; Layout.topMargin: 8 }
-                
+
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: 6
+
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 2
                         Label { text: "Siła ciągu (kN)"; font.pixelSize: 10 }
                         TextField {
-                            id: thrustInput
+                            id: addThrustInput
                             text: "0"
                             inputMethodHints: Qt.ImhDigitsOnly
                             Layout.fillWidth: true
@@ -258,7 +262,7 @@ Item {
                         spacing: 2
                         Label { text: "Długość (m)"; font.pixelSize: 10 }
                         TextField {
-                            id: lengthInput
+                            id: addLengthInput
                             text: "0.00"
                             inputMethodHints: Qt.ImhFormattedNumbersOnly
                             Layout.fillWidth: true
@@ -266,28 +270,30 @@ Item {
                         }
                     }
                 }
-                
+
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: 6
+
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 2
                         Label { text: "Liczba silników"; font.pixelSize: 10 }
                         TextField {
-                            id: numberOfEnginesInput
+                            id: addNumberOfEnginesInput
                             text: "1"
                             inputMethodHints: Qt.ImhDigitsOnly
                             Layout.fillWidth: true
                             font.pixelSize: 11
                         }
                     }
+
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 2
                         Label { text: "Pasażerowie"; font.pixelSize: 10 }
                         TextField {
-                            id: passengersInput
+                            id: addPassengersInput
                             text: "0"
                             inputMethodHints: Qt.ImhDigitsOnly
                             Layout.fillWidth: true
@@ -295,28 +301,30 @@ Item {
                         }
                     }
                 }
-                
+
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: 6
+
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 2
                         Label { text: "Max prędkość (km/h)"; font.pixelSize: 10 }
                         TextField {
-                            id: maxSpeedInput
+                            id: addMaxSpeedInput
                             text: "0.00"
                             inputMethodHints: Qt.ImhFormattedNumbersOnly
                             Layout.fillWidth: true
                             font.pixelSize: 11
                         }
                     }
+
                     ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 2
                         Label { text: "Max wysokość (km)"; font.pixelSize: 10 }
                         TextField {
-                            id: maxAltitudeInput
+                            id: addMaxAltitudeInput
                             text: "0.00"
                             inputMethodHints: Qt.ImhFormattedNumbersOnly
                             Layout.fillWidth: true
@@ -328,24 +336,25 @@ Item {
         }
 
         onAccepted: {
-            var thrustVal = parseInt(thrustInput.text) || 0
-            var lengthVal = parseFloat(lengthInput.text) || 0
-            var enginesVal = parseInt(numberOfEnginesInput.text) || 1
-            var passengersVal = parseInt(passengersInput.text) || 0
-            var speedVal = parseFloat(maxSpeedInput.text) || 0
-            var altitudeVal = parseFloat(maxAltitudeInput.text) || 0
+            var thrustVal = parseInt(addThrustInput.text) || 0
+            var lengthVal = parseFloat(addLengthInput.text) || 0
+            var enginesVal = parseInt(addNumberOfEnginesInput.text) || 1
+            var passengersVal = parseInt(addPassengersInput.text) || 0
+            var speedVal = parseFloat(addMaxSpeedInput.text) || 0
+            var altitudeVal = parseFloat(addMaxAltitudeInput.text) || 0
 
-            if (root.service.addPlane(brandInput.text, modelInput.text, statusInput.currentText,
+            if (root.service.addPlane(addBrandInput.text, addModelInput.text, addStatusInput.currentText,
                                        thrustVal, lengthVal, enginesVal, passengersVal, speedVal, altitudeVal)) {
                 root.refreshPlanes();
-                brandInput.clear();
-                modelInput.clear();
-                thrustInput.text = "0"
-                lengthInput.text = "0.00"
-                numberOfEnginesInput.text = "1"
-                passengersInput.text = "0"
-                maxSpeedInput.text = "0.00"
-                maxAltitudeInput.text = "0.00"
+                addBrandInput.clear();
+                addModelInput.clear();
+                addThrustInput.text = "0"
+                addLengthInput.text = "0.00"
+                addNumberOfEnginesInput.text = "1"
+                addPassengersInput.text = "0"
+                addMaxSpeedInput.text = "0.00"
+                addMaxAltitudeInput.text = "0.00"
+                addStatusInput.currentIndex = 0
             }
         }
     }
