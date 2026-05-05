@@ -44,8 +44,8 @@ Dialog {
         root.maxSpeedValue = plane.maxSpeed ? plane.maxSpeed : 0
         root.maxAltitudeValue = plane.maxAltitude ? plane.maxAltitude : 0
 
-        editBrandInput.clear()
-        editModelInput.clear()
+        editBrandInput.text = root.brandValue
+        editModelInput.text = root.modelValue
 
         var statusIndex = editStatusInput.model.indexOf(root.statusValue)
         editStatusInput.currentIndex = statusIndex >= 0 ? statusIndex : 0
@@ -75,13 +75,11 @@ Dialog {
 
             TextField {
                 id: editBrandInput
-                placeholderText: root.brandValue
                 Layout.fillWidth: true
                 font.pixelSize: 12
             }
             TextField {
                 id: editModelInput
-                placeholderText: root.modelValue
                 Layout.fillWidth: true
                 font.pixelSize: 12
             }
@@ -199,7 +197,7 @@ Dialog {
         var altitudeVal = parseFloat(editMaxAltitudeInput.text) || 0
 
         if (root.service.updatePlane(root.planeId, brandToSave, modelToSave, editStatusInput.currentText,
-                                     thrustVal, lengthVal, enginesVal, passengersVal, speedVal, altitudeVal)) {
+                                     thrustVal, lengthVal, enginesVal, passengersVal, speedVal, altitudeVal, "")) {
             root.saved()
         }
     }
