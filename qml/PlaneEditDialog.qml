@@ -25,6 +25,7 @@ Dialog {
     property int passengersValue: 0
     property double maxSpeedValue: 0
     property double maxAltitudeValue: 0
+    property string imagePath: ""
 
     signal saved()
 
@@ -43,6 +44,7 @@ Dialog {
         root.passengersValue = plane.passengers ? plane.passengers : 0
         root.maxSpeedValue = plane.maxSpeed ? plane.maxSpeed : 0
         root.maxAltitudeValue = plane.maxAltitude ? plane.maxAltitude : 0
+        root.imagePath = plane.imagePath ? plane.imagePath : ""
 
         editBrandInput.text = root.brandValue
         editModelInput.text = root.modelValue
@@ -196,8 +198,9 @@ Dialog {
         var speedVal = parseFloat(editMaxSpeedInput.text) || 0
         var altitudeVal = parseFloat(editMaxAltitudeInput.text) || 0
 
+        // Preserve existing image path - don't overwrite with empty string
         if (root.service.updatePlane(root.planeId, brandToSave, modelToSave, editStatusInput.currentText,
-                                     thrustVal, lengthVal, enginesVal, passengersVal, speedVal, altitudeVal, "")) {
+                                     thrustVal, lengthVal, enginesVal, passengersVal, speedVal, altitudeVal, root.imagePath)) {
             root.saved()
         }
     }

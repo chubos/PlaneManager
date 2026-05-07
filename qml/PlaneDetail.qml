@@ -348,7 +348,7 @@ Item {
                                     color: "#999999"
                                 }
                                 Label {
-                                    text: root.planeData ? root.planeData.maxAltitude.toFixed(0) + " m" : "-"
+                                    text: root.planeData ? root.planeData.maxAltitude.toFixed(0) + " km" : "-"
                                     font.pixelSize: 15
                                     color: "#1a1a1a"
                                     font.bold: true
