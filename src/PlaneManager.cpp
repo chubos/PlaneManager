@@ -206,3 +206,105 @@ void PlaneManager::onUploadDone() {
     reply->deleteLater();
     qDebug() << "===== onUploadDone FINISHED =====";
 }
+
+QVariantMap PlaneManager::getStatistics() {
+    QVariantMap stats;
+    
+    QSqlQuery query;
+    query.prepare(
+        "SELECT "
+        "COUNT(*) as total_planes, "
+        "SUM(CASE WHEN "
+        "    EXISTS (SELECT 1 FROM flights f WHERE f.plane_id = p.id AND f.start_time <= CURRENT_TIMESTAMP AND f.end_time >= CURRENT_TIMESTAMP) "
+        "    THEN 1 ELSE 0 END) as in_flight, "
+        "SUM(CASE WHEN LOWER(COALESCE(p.status, '')) = 'w serwisie' THEN 1 ELSE 0 END) as in_service, "
+        "SUM(CASE WHEN "
+        "    NOT EXISTS (SELECT 1 FROM flights f WHERE f.plane_id = p.id AND f.start_time <= CURRENT_TIMESTAMP AND f.end_time >= CURRENT_TIMESTAMP) "
+        "    AND LOWER(COALESCE(p.status, '')) != 'w serwisie' "
+        "    THEN 1 ELSE 0 END) as available, "
+        "AVG(p.length) as avg_length, "
+        "AVG(p.passengers) as avg_passengers, "
+        "MAX(p.length) as max_length, "
+        "MIN(p.length) as min_length, "
+        "MAX(p.passengers) as max_passengers, "
+        "MIN(p.passengers) as min_passengers "
+        "FROM planes p"
+    );
+    
+    if (query.exec() && query.next()) {
+        stats["totalPlanes"] = query.value("total_planes").toInt();
+        stats["availablePlanes"] = query.value("available").isNull() ? 0 : query.value("available").toInt();
+        stats["inServicePlanes"] = query.value("in_service").isNull() ? 0 : query.value("in_service").toInt();
+        stats["inFlightPlanes"] = query.value("in_flight").isNull() ? 0 : query.value("in_flight").toInt();
+        stats["avgLength"] = query.value("avg_length").isNull() ? 0.0 : query.value("avg_length").toDouble();
+        stats["avgPassengers"] = query.value("avg_passengers").isNull() ? 0.0 : query.value("avg_passengers").toDouble();
+        stats["maxLength"] = query.value("max_length").isNull() ? 0.0 : query.value("max_length").toDouble();
+        stats["minLength"] = query.value("min_length").isNull() ? 0.0 : query.value("min_length").toDouble();
+        stats["maxPassengers"] = query.value("max_passengers").isNull() ? 0 : query.value("max_passengers").toInt();
+        stats["minPassengers"] = query.value("min_passengers").isNull() ? 0 : query.value("min_passengers").toInt();
+    } else {
+        qDebug() << "Error fetching statistics:" << query.lastError().text();
+        // Ustaw domyślne wartości
+        stats["totalPlanes"] = 0;
+        stats["availablePlanes"] = 0;
+        stats["inServicePlanes"] = 0;
+        stats["inFlightPlanes"] = 0;
+        stats["avgLength"] = 0.0;
+        stats["avgPassengers"] = 0.0;
+        stats["maxLength"] = 0.0;
+        stats["minLength"] = 0.0;
+        stats["maxPassengers"] = 0;
+        stats["minPassengers"] = 0;
+    }
+    
+    return stats;
+}
+
+QVariantMap PlaneManager::getExtremeAircrafts() {
+    QVariantMap extremes;
+    QVariantList allPlanes = getAllPlanes();
+    
+    if (allPlanes.isEmpty()) {
+        return extremes;
+    }
+    
+    QVariantMap maxLength = allPlanes.first().toMap();
+    QVariantMap minLength = allPlanes.first().toMap();
+    QVariantMap maxPassengers = allPlanes.first().toMap();
+    QVariantMap minPassengers = allPlanes.first().toMap();
+    
+    for (const auto &plane : allPlanes) {
+        QVariantMap p = plane.toMap();
+        
+        if (p["length"].toDouble() > maxLength["length"].toDouble()) {
+            maxLength = p;
+        }
+        if (p["length"].toDouble() < minLength["length"].toDouble()) {
+            minLength = p;
+        }
+        if (p["passengers"].toInt() > maxPassengers["passengers"].toInt()) {
+            maxPassengers = p;
+        }
+        if (p["passengers"].toInt() < minPassengers["passengers"].toInt()) {
+            minPassengers = p;
+        }
+    }
+    
+    extremes["maxLengthBrand"] = maxLength["brand"];
+    extremes["maxLengthModel"] = maxLength["model"];
+    extremes["maxLengthValue"] = maxLength["length"];
+    
+    extremes["minLengthBrand"] = minLength["brand"];
+    extremes["minLengthModel"] = minLength["model"];
+    extremes["minLengthValue"] = minLength["length"];
+    
+    extremes["maxPassengersBrand"] = maxPassengers["brand"];
+    extremes["maxPassengersModel"] = maxPassengers["model"];
+    extremes["maxPassengersValue"] = maxPassengers["passengers"];
+    
+    extremes["minPassengersBrand"] = minPassengers["brand"];
+    extremes["minPassengersModel"] = minPassengers["model"];
+    extremes["minPassengersValue"] = minPassengers["passengers"];
+    
+    return extremes;
+}

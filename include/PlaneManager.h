@@ -29,6 +29,10 @@ public:
     // Usuwanie samolotu
     Q_INVOKABLE bool deletePlane(int id);
     Q_INVOKABLE void uploadImage(int planeId, const QString &filePath);
+    
+    // Pobieranie statystyk samolotow
+    Q_INVOKABLE QVariantMap getStatistics();
+    Q_INVOKABLE QVariantMap getExtremeAircrafts();
 
 signals:
     void imageUploadFinished(int planeId, bool success, const QString &msg);

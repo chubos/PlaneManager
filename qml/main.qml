@@ -77,6 +77,15 @@ ApplicationWindow {
                     onClicked: stackView.replace("MapView.qml")
                 }
 
+                Button {
+                    text: "Statystyka"
+                    Layout.fillWidth: true
+                    Material.elevation: 0
+                    flat: stackView.currentItem && stackView.currentItem.objectName !== "statisticsView"
+                    font.pixelSize: 15
+                    onClicked: stackView.replace("Statistics.qml")
+                }
+
                 Item { Layout.fillHeight: true } // Zapelniacz spychajacy do gory
             }
 
