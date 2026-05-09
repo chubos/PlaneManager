@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.16)  7 MAY 2026 19:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.16)  9 MAY 2026 17:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -718,28 +718,89 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.73 \newpage
+l.74 \newpage
               [1]
-<przykladowy_zrzut.png, id=27, 786.94pt x 522.95375pt>
-File: przykladowy_zrzut.png Graphic file (type png)
-<use przykladowy_zrzut.png>
-Package pdftex.def Info: przykladowy_zrzut.png  used on input line 84.
-(pdftex.def)             Requested size: 435.32419pt x 289.2852pt.
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 89.
- (silnia.cpp
+<baza.png, id=26, 629.35126pt x 666.99188pt>
+File: baza.png Graphic file (type png)
+<use baza.png>
+Package pdftex.def Info: baza.png  used on input line 93.
+(pdftex.def)             Requested size: 435.32419pt x 461.3546pt.
+ [2]
+Overfull \hbox (4.4311pt too wide) in paragraph at lines 100--101
+\T1/cmr/m/n/12 wa-nie i ak-tu-ali-za-cja re-ali-zo-wane s¡ po-przez za-py-ta-nia pa-ra-me-try-zo-wane (\T1/cmtt/m/n/12 prepare \T1/cmr/m/n/12 + \T1/cmtt/m/n/12 bindValue\T1/cmr/m/n/12 ),
+ []
+
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 108.
+(C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/PlaneManager.cpp
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 1.
-) [2 <./przykladowy_zrzut.png>]
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 14.
+ [3 <./baza.png>] [4] [5]) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/AirportManager.cpp [6]) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/FlightManager.cpp [7] [8] [9] [10]
+Overfull \hbox (38.77057pt too wide) in paragraph at lines 165--166
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (25.19037pt too wide) in paragraph at lines 166--167
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (18.40027pt too wide) in paragraph at lines 167--168
+[][][][][][][][][][][][][][][][][][][][][][]  
+ []
+
+
+Overfull \hbox (4.82007pt too wide) in paragraph at lines 168--169
+[][][][][][][][][][][][][][][][][][][][][][]  
+ []
+
+[11] [12]) [13]
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 141.
+
+Overfull \hbox (18.4751pt too wide) in paragraph at lines 151--152
+\T1/cmr/m/n/12 Zamiast re-je-stro-wa-nia ty-pów w sil-niku QML i bu-dowy wªa-snych mo-deli (np. \T1/cmtt/m/n/12 QAbstractListModel\T1/cmr/m/n/12 ),
+ []
+
+
+Overfull \hbox (13.37393pt too wide) in paragraph at lines 151--152
+\T1/cmr/m/n/12 QML jako \T1/cmtt/m/n/12 contextProperty\T1/cmr/m/n/12 . Dzi¦ki temu QML wi-dzi je jako glo-balne obiekty (np. \T1/cmtt/m/n/12 planeService\T1/cmr/m/n/12 )
+ []
+
+(C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/main.cpp [14])
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 161.
+ [15]
+<przykladowy_zrzut.png, id=526, 786.94pt x 522.95375pt>
 File: przykladowy_zrzut.png Graphic file (type png)
 <use przykladowy_zrzut.png>
-Package pdftex.def Info: przykladowy_zrzut.png  used on input line 102.
+Package pdftex.def Info: przykladowy_zrzut.png  used on input line 184.
 (pdftex.def)             Requested size: 435.32419pt x 289.2852pt.
- (silnia.cpp) [3]
-File: przykladowy_zrzut.png Graphic file (type png)
-<use przykladowy_zrzut.png>
-Package pdftex.def Info: przykladowy_zrzut.png  used on input line 126.
-(pdftex.def)             Requested size: 435.32419pt x 289.2852pt.
- [4] [5] (zpwjcpp__lab__szablon_raportu.aux)
+ [16 <./przykladowy_zrzut.png>] [17] (zpwjcpp__lab__szablon_raportu.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -748,17 +809,17 @@ Package rerunfilecheck Info: File `zpwjcpp__lab__szablon_raportu.out' has not ch
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 28920 strings out of 467867
- 542641 string characters out of 5418334
- 1151307 words of memory out of 5000000
- 57309 multiletter control sequences out of 15000+600000
- 642313 words of font info for 73 fonts, out of 8000000 for 9000
+ 29592 strings out of 467867
+ 552949 string characters out of 5418334
+ 1272307 words of memory out of 5000000
+ 57555 multiletter control sequences out of 15000+600000
+ 644054 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,11n,120p,613b,1415s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0600.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi450\ectt0800.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc2074.pk><C:/Users/chubo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on zpwjcpp__lab__szablon_raportu.pdf (6 pages, 951442 bytes).
+ 84i,12n,120p,1355b,2635s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecit1095.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0600.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi450\ectt0800.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc2074.pk><C:/Users/chubo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on zpwjcpp__lab__szablon_raportu.pdf (18 pages, 1187564 bytes).
 PDF statistics:
- 351 PDF objects out of 1000 (max. 8388607)
- 46 named destinations out of 1000 (max. 500000)
- 23 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1119 PDF objects out of 1200 (max. 8388607)
+ 450 named destinations out of 1000 (max. 500000)
+ 28 words of extra memory for PDF output out of 10000 (max. 10000000)
 
