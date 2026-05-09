@@ -14,10 +14,10 @@ class AirportManager : public QObject {
 public:
     explicit AirportManager(QObject *parent = nullptr);
 
-    // Dodawanie nowego lotniska (np. z formularza)
+    // Dodawanie nowego lotniska
     Q_INVOKABLE bool addAirport(const QString &icao, const QString &name, double lat, double lon);
 
-    // Pobieranie wszystkich lotnisk (do wyswietlenia na liscie lub mapie)
+    // Pobieranie wszystkich lotnisk
     Q_INVOKABLE QVariantList getAllAirports();
 
     // Edycja danych lotniska

@@ -27,10 +27,12 @@ qt_add_executable(PlaneManager
     src/PlaneManager.cpp
     src/AirportManager.cpp
     src/FlightManager.cpp
+    src/OsmNetworkAccessManager.cpp
     include/DatabaseManager.h
     include/PlaneManager.h
     include/AirportManager.h
     include/FlightManager.h
+    include/OsmNetworkAccessManager.h
 )
 
 target_include_directories(PlaneManager PRIVATE include/)
