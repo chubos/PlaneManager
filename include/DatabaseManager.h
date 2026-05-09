@@ -13,7 +13,7 @@ public:
     explicit DatabaseManager(QObject *parent = nullptr);
     ~DatabaseManager();
 
-    // Metoda dostepna z poziomu QML (dzieki Q_INVOKABLE)
+    // Metoda dostepna z poziomu QML
     Q_INVOKABLE bool connectToSupabase();
 
     // Sprawdzenie czy polaczenie jest aktywne

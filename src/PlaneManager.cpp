@@ -128,10 +128,6 @@ void PlaneManager::uploadImage(int planeId, const QString &filePath) {
     auto supabaseUrl = env.value("SUPABASE_URL");
     auto supabaseKey = env.value("SUPABASE_SERVICE_ROLE_KEY");
     
-    qDebug() << "=== Upload Image START ===";
-    qDebug() << "PlaneID:" << planeId << "File:" << filePath;
-    qDebug() << "SUPABASE_URL:" << supabaseUrl;
-    qDebug() << "SUPABASE_SERVICE_ROLE_KEY:" << (supabaseKey.isEmpty() ? "NOT SET" : "SET");
     
     // Usuń wszystkie możliwe stare formaty zanim upload nowego
     QStringList extensions = {"jpg", "jpeg", "png", "bmp", "gif"};
@@ -142,7 +138,6 @@ void PlaneManager::uploadImage(int planeId, const QString &filePath) {
         delReq.setRawHeader("Authorization", ("Bearer " + supabaseKey).toUtf8());
         auto delReply = m_net->deleteResource(delReq);
         connect(delReply, &QNetworkReply::finished, delReply, &QNetworkReply::deleteLater);
-        qDebug() << "DELETE old image." + ext;
     }
     
     // Upload nowego pliku
@@ -162,7 +157,7 @@ void PlaneManager::uploadImage(int planeId, const QString &filePath) {
     connect(reply, &QNetworkReply::finished, this, &PlaneManager::onUploadDone);
     m_map[reply] = planeId;
     f.close();
-    qDebug() << "PUT request sent, waiting for response...";
+    qDebug() << "PUT request sent.";
 }
 
 void PlaneManager::onUploadDone() {
@@ -262,49 +257,51 @@ QVariantMap PlaneManager::getStatistics() {
 
 QVariantMap PlaneManager::getExtremeAircrafts() {
     QVariantMap extremes;
-    QVariantList allPlanes = getAllPlanes();
-    
-    if (allPlanes.isEmpty()) {
+
+    QSqlQuery query;
+    query.prepare(R"SQL(
+        SELECT
+            (SELECT brand FROM planes WHERE length IS NOT NULL ORDER BY length DESC, id ASC LIMIT 1)      AS maxLengthBrand,
+            (SELECT model FROM planes WHERE length IS NOT NULL ORDER BY length DESC, id ASC LIMIT 1)      AS maxLengthModel,
+            (SELECT length FROM planes WHERE length IS NOT NULL ORDER BY length DESC, id ASC LIMIT 1)     AS maxLengthValue,
+
+            (SELECT brand FROM planes WHERE length IS NOT NULL ORDER BY length ASC, id ASC LIMIT 1)       AS minLengthBrand,
+            (SELECT model FROM planes WHERE length IS NOT NULL ORDER BY length ASC, id ASC LIMIT 1)       AS minLengthModel,
+            (SELECT length FROM planes WHERE length IS NOT NULL ORDER BY length ASC, id ASC LIMIT 1)      AS minLengthValue,
+
+            (SELECT brand FROM planes WHERE passengers IS NOT NULL ORDER BY passengers DESC, id ASC LIMIT 1)   AS maxPassengersBrand,
+            (SELECT model FROM planes WHERE passengers IS NOT NULL ORDER BY passengers DESC, id ASC LIMIT 1)   AS maxPassengersModel,
+            (SELECT passengers FROM planes WHERE passengers IS NOT NULL ORDER BY passengers DESC, id ASC LIMIT 1) AS maxPassengersValue,
+
+            (SELECT brand FROM planes WHERE passengers IS NOT NULL ORDER BY passengers ASC, id ASC LIMIT 1)    AS minPassengersBrand,
+            (SELECT model FROM planes WHERE passengers IS NOT NULL ORDER BY passengers ASC, id ASC LIMIT 1)    AS minPassengersModel,
+            (SELECT passengers FROM planes WHERE passengers IS NOT NULL ORDER BY passengers ASC, id ASC LIMIT 1) AS minPassengersValue
+        WHERE EXISTS (SELECT 1 FROM planes)
+    )SQL");
+
+    if (!query.exec()) {
+        qDebug() << "Blad SQL przy pobieraniu ekstremow:" << query.lastError().text();
         return extremes;
     }
-    
-    QVariantMap maxLength = allPlanes.first().toMap();
-    QVariantMap minLength = allPlanes.first().toMap();
-    QVariantMap maxPassengers = allPlanes.first().toMap();
-    QVariantMap minPassengers = allPlanes.first().toMap();
-    
-    for (const auto &plane : allPlanes) {
-        QVariantMap p = plane.toMap();
-        
-        if (p["length"].toDouble() > maxLength["length"].toDouble()) {
-            maxLength = p;
-        }
-        if (p["length"].toDouble() < minLength["length"].toDouble()) {
-            minLength = p;
-        }
-        if (p["passengers"].toInt() > maxPassengers["passengers"].toInt()) {
-            maxPassengers = p;
-        }
-        if (p["passengers"].toInt() < minPassengers["passengers"].toInt()) {
-            minPassengers = p;
-        }
+    if (!query.next()) {
+        return extremes;
     }
-    
-    extremes["maxLengthBrand"] = maxLength["brand"];
-    extremes["maxLengthModel"] = maxLength["model"];
-    extremes["maxLengthValue"] = maxLength["length"];
-    
-    extremes["minLengthBrand"] = minLength["brand"];
-    extremes["minLengthModel"] = minLength["model"];
-    extremes["minLengthValue"] = minLength["length"];
-    
-    extremes["maxPassengersBrand"] = maxPassengers["brand"];
-    extremes["maxPassengersModel"] = maxPassengers["model"];
-    extremes["maxPassengersValue"] = maxPassengers["passengers"];
-    
-    extremes["minPassengersBrand"] = minPassengers["brand"];
-    extremes["minPassengersModel"] = minPassengers["model"];
-    extremes["minPassengersValue"] = minPassengers["passengers"];
+
+    extremes["maxLengthBrand"] = query.value("maxLengthBrand");
+    extremes["maxLengthModel"] = query.value("maxLengthModel");
+    extremes["maxLengthValue"] = query.value("maxLengthValue");
+
+    extremes["minLengthBrand"] = query.value("minLengthBrand");
+    extremes["minLengthModel"] = query.value("minLengthModel");
+    extremes["minLengthValue"] = query.value("minLengthValue");
+
+    extremes["maxPassengersBrand"] = query.value("maxPassengersBrand");
+    extremes["maxPassengersModel"] = query.value("maxPassengersModel");
+    extremes["maxPassengersValue"] = query.value("maxPassengersValue");
+
+    extremes["minPassengersBrand"] = query.value("minPassengersBrand");
+    extremes["minPassengersModel"] = query.value("minPassengersModel");
+    extremes["minPassengersValue"] = query.value("minPassengersValue");
     
     return extremes;
 }

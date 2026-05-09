@@ -78,17 +78,11 @@ QVariantMap AirportManager::parseGoogleMapsUrl(const QString &urlText) const {
 
     const QString trimmedUrl = urlText.trimmed();
     if (trimmedUrl.isEmpty()) {
-        result["error"] = "Wklej link Google Maps.";
+        result["error"] = "Niepoprawny link Google Maps.";
         return result;
     }
 
-    const QUrl url = QUrl::fromUserInput(trimmedUrl);
-    if (!url.isValid()) {
-        result["error"] = "Nieprawidlowy adres URL.";
-        return result;
-    }
-
-    const QString decodedUrl = QUrl::fromPercentEncoding(url.toString().toUtf8());
+    const QString decodedUrl = QUrl::fromPercentEncoding(trimmedUrl.toUtf8());
 
     QString name;
     const QRegularExpression placeRegex("/place/([^/@?]+)");
@@ -97,29 +91,25 @@ QVariantMap AirportManager::parseGoogleMapsUrl(const QString &urlText) const {
         name = placeMatch.captured(1).replace('+', ' ').trimmed();
     }
 
+    const QRegularExpression atRegex("/@(-?\\d+(?:\\.\\d+)?),(-?\\d+(?:\\.\\d+)?)");
+    const QRegularExpression coordsRegex("!3d(-?\\d+(?:\\.\\d+)?)!4d(-?\\d+(?:\\.\\d+)?)");
+
+    QRegularExpressionMatch coordMatch = atRegex.match(decodedUrl);
+    if (!coordMatch.hasMatch()) {
+        coordMatch = coordsRegex.match(decodedUrl);
+    }
+
+    if (!coordMatch.hasMatch()) {
+        result["error"] = "Niepoprawny link Google Maps.";
+        return result;
+    }
+
     bool latOk = false;
     bool lonOk = false;
-    double latitude = 0.0;
-    double longitude = 0.0;
-
-    const QRegularExpression atRegex("/@(-?\\d+(?:\\.\\d+)?),(-?\\d+(?:\\.\\d+)?)");
-    const QRegularExpressionMatch atMatch = atRegex.match(decodedUrl);
-    if (atMatch.hasMatch()) {
-        latitude = atMatch.captured(1).toDouble(&latOk);
-        longitude = atMatch.captured(2).toDouble(&lonOk);
-    }
-
+    const double latitude = coordMatch.captured(1).toDouble(&latOk);
+    const double longitude = coordMatch.captured(2).toDouble(&lonOk);
     if (!(latOk && lonOk)) {
-        const QRegularExpression coordsRegex("!3d(-?\\d+(?:\\.\\d+)?)!4d(-?\\d+(?:\\.\\d+)?)");
-        const QRegularExpressionMatch coordsMatch = coordsRegex.match(decodedUrl);
-        if (coordsMatch.hasMatch()) {
-            latitude = coordsMatch.captured(1).toDouble(&latOk);
-            longitude = coordsMatch.captured(2).toDouble(&lonOk);
-        }
-    }
-
-    if (!(latOk && lonOk)) {
-        result["error"] = "Nie znaleziono wspolrzednych w linku.";
+        result["error"] = "Niepoprawny link Google Maps.";
         return result;
     }
 

@@ -14,15 +14,13 @@ public:
     explicit FlightManager(QObject *parent = nullptr);
 
     // Dodawanie nowego lotu
-    Q_INVOKABLE bool addFlight(int planeId, int depAirportId, int arrAirportId, 
-                               const QDateTime &startTime, const QDateTime &endTime);
+    Q_INVOKABLE bool addFlight(int planeId, int depAirportId, int arrAirportId, const QDateTime &startTime, const QDateTime &endTime);
 
     // Pobieranie wszystkich lotow z polaczeniem tabel (JOIN)
     Q_INVOKABLE QVariantList getAllFlights();
 
     // Edycja istniejacego lotu
-    Q_INVOKABLE bool updateFlight(int id, int planeId, int depAirportId, int arrAirportId, 
-                                  const QDateTime &startTime, const QDateTime &endTime);
+    Q_INVOKABLE bool updateFlight(int id, int planeId, int depAirportId, int arrAirportId, const QDateTime &startTime, const QDateTime &endTime);
 
     // Usuwanie lotu
     Q_INVOKABLE bool deleteFlight(int id);

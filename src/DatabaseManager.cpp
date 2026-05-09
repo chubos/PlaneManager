@@ -4,7 +4,7 @@
 DatabaseManager::DatabaseManager(QObject *parent) : QObject(parent) {
     // Sprawdzamy, czy sterownik PostgreSQL jest dostepny
     if (!QSqlDatabase::isDriverAvailable("QPSQL")) {
-        qCritical() << "BLAD: Sterownik QPSQL (PostgreSQL) nie jest dostepny w Twoim systemie Qt!";
+        qCritical() << "Sterownik QPSQL (PostgreSQL) nie jest dostepny.";
     }
     m_db = QSqlDatabase::addDatabase("QPSQL");
 }
@@ -24,7 +24,7 @@ bool DatabaseManager::connectToSupabase() {
     m_db.setPassword(env.value("DB_PASS"));
     m_db.setPort(env.value("DB_PORT").toInt());
 
-    // Dodaj te linie, aby uniknac problemow z wygasaniem sesji na poolerze
+    // Unikanie problemow z wygasaniem sesji na poolerze
     m_db.setConnectOptions("keepalives=1;connect_timeout=10");
 
     if (!m_db.open()) {

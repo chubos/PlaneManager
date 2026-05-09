@@ -96,7 +96,7 @@ Item {
                                     text: root.stats ? root.stats.totalPlanes : "0"
                                     font.pixelSize: 36
                                     font.bold: true
-                                    color: "#1976D2"
+                                    color: "#000"
                                     Layout.alignment: Qt.AlignHCenter
                                 }
                                 Label {
@@ -126,7 +126,7 @@ Item {
                                     text: root.stats ? root.stats.availablePlanes : "0"
                                     font.pixelSize: 36
                                     font.bold: true
-                                    color: "#388E3C"
+                                    color: "#000"
                                     Layout.alignment: Qt.AlignHCenter
                                 }
                                 Label {
@@ -156,7 +156,7 @@ Item {
                                     text: root.stats ? root.stats.inFlightPlanes : "0"
                                     font.pixelSize: 36
                                     font.bold: true
-                                    color: "#F57C00"
+                                    color: "#000"
                                     Layout.alignment: Qt.AlignHCenter
                                 }
                                 Label {
@@ -186,7 +186,7 @@ Item {
                                     text: root.stats ? root.stats.inServicePlanes : "0"
                                     font.pixelSize: 36
                                     font.bold: true
-                                    color: "#C62828"
+                                    color: "#000"
                                     Layout.alignment: Qt.AlignHCenter
                                 }
                                 Label {
@@ -312,7 +312,6 @@ Item {
                         text: "Charakterystyka Floty"
                         font.pixelSize: 16
                         font.bold: true
-                        color: "#333"
                         Layout.alignment: Qt.AlignHCenter
                     }
 
@@ -324,9 +323,16 @@ Item {
                         Layout.alignment: Qt.AlignHCenter
 
                         ColumnLayout {
+                            Layout.fillWidth: true
                             spacing: 10
 
-                            Label { text: "Długość Samolotów"; font.pixelSize: 15; font.bold: true; color: "#333" }
+                            Label { text: "Długość Samolotów"; font.pixelSize: 15; font.bold: true }
+
+                            Rectangle {
+                                Layout.fillWidth: true
+                                height: 1
+                                color: Material.dividerColor
+                            }
 
                             GridLayout {
                                 columns: 2
@@ -334,29 +340,36 @@ Item {
                                 rowSpacing: 8
                                 Layout.fillWidth: true
 
-                                Label { text: "Średnia:"; font.pixelSize: 13; color: "#000" }
-                                Label { text: root.stats ? root.stats.avgLength.toFixed(2) + " m" : "0 m"; font.pixelSize: 12; font.bold: true; color: "#1976D2" }
+                                Label { text: "Średnia:"; font.pixelSize: 13 }
+                                Label { text: root.stats ? root.stats.avgLength.toFixed(2) + " m" : "0 m"; font.pixelSize: 12; font.bold: true }
 
-                                Label { text: "Maksymalna:"; font.pixelSize: 13; color: "#000" }
+                                Label { text: "Maksymalna:"; font.pixelSize: 13 }
                                 ColumnLayout {
                                     spacing: 2
-                                    Label { text: root.extremes ? Number(root.extremes.maxLengthValue).toFixed(2) + " m" : "0 m"; font.pixelSize: 12; font.bold: true; color: "#4CAF50" }
-                                    Label { text: root.extremes ? (root.extremes.maxLengthBrand + " " + root.extremes.maxLengthModel) : ""; font.pixelSize: 10; color: "#999" }
+                                    Label { text: root.extremes ? Number(root.extremes.maxLengthValue).toFixed(2) + " m" : "0 m"; font.pixelSize: 12; font.bold: true }
+                                    Label { text: root.extremes ? (root.extremes.maxLengthBrand + " " + root.extremes.maxLengthModel) : ""; font.pixelSize: 10 }
                                 }
 
-                                Label { text: "Minimalna:"; font.pixelSize: 13; color: "#000" }
+                                Label { text: "Minimalna:"; font.pixelSize: 13 }
                                 ColumnLayout {
                                     spacing: 2
-                                    Label { text: root.extremes ? Number(root.extremes.minLengthValue).toFixed(2) + " m" : "0 m"; font.pixelSize: 12; font.bold: true; color: "#F57C00" }
-                                    Label { text: root.extremes ? (root.extremes.minLengthBrand + " " + root.extremes.minLengthModel) : ""; font.pixelSize: 10; color: "#999" }
+                                    Label { text: root.extremes ? Number(root.extremes.minLengthValue).toFixed(2) + " m" : "0 m"; font.pixelSize: 12; font.bold: true }
+                                    Label { text: root.extremes ? (root.extremes.minLengthBrand + " " + root.extremes.minLengthModel) : ""; font.pixelSize: 10 }
                                 }
                             }
                         }
 
                         ColumnLayout {
+                            Layout.fillWidth: true
                             spacing: 10
 
-                            Label { text: "Pojemność Samolotów"; font.pixelSize: 15; font.bold: true; color: "#333" }
+                            Label { text: "Pojemność Samolotów"; font.pixelSize: 15; font.bold: true }
+
+                            Rectangle {
+                                Layout.fillWidth: true
+                                height: 1
+                                color: Material.dividerColor
+                            }
 
                             GridLayout {
                                 columns: 2
@@ -364,21 +377,21 @@ Item {
                                 rowSpacing: 8
                                 Layout.fillWidth: true
 
-                                Label { text: "Średnia:"; font.pixelSize: 13; color: "#000" }
-                                Label { text: root.stats ? Math.round(root.stats.avgPassengers) + " pax" : "0 pax"; font.pixelSize: 12; font.bold: true; color: "#1976D2" }
+                                Label { text: "Średnia:"; font.pixelSize: 13 }
+                                Label { text: root.stats ? Math.round(root.stats.avgPassengers) + " pax" : "0 pax"; font.pixelSize: 12; font.bold: true }
 
-                                Label { text: "Maksymalna:"; font.pixelSize: 13; color: "#000" }
+                                Label { text: "Maksymalna:"; font.pixelSize: 13 }
                                 ColumnLayout {
                                     spacing: 2
-                                    Label { text: root.extremes ? root.extremes.maxPassengersValue + " pax" : "0 pax"; font.pixelSize: 12; font.bold: true; color: "#4CAF50" }
-                                    Label { text: root.extremes ? (root.extremes.maxPassengersBrand + " " + root.extremes.maxPassengersModel) : ""; font.pixelSize: 10; color: "#999" }
+                                    Label { text: root.extremes ? root.extremes.maxPassengersValue + " pax" : "0 pax"; font.pixelSize: 12; font.bold: true }
+                                    Label { text: root.extremes ? (root.extremes.maxPassengersBrand + " " + root.extremes.maxPassengersModel) : ""; font.pixelSize: 10 }
                                 }
 
-                                Label { text: "Minimalna:"; font.pixelSize: 13; color: "#000" }
+                                Label { text: "Minimalna:"; font.pixelSize: 13 }
                                 ColumnLayout {
                                     spacing: 2
-                                    Label { text: root.extremes ? root.extremes.minPassengersValue + " pax" : "0 pax"; font.pixelSize: 12; font.bold: true; color: "#F57C00" }
-                                    Label { text: root.extremes ? (root.extremes.minPassengersBrand + " " + root.extremes.minPassengersModel) : ""; font.pixelSize: 10; color: "#999" }
+                                    Label { text: root.extremes ? root.extremes.minPassengersValue + " pax" : "0 pax"; font.pixelSize: 12; font.bold: true }
+                                    Label { text: root.extremes ? (root.extremes.minPassengersBrand + " " + root.extremes.minPassengersModel) : ""; font.pixelSize: 10 }
                                 }
                             }
                         }
