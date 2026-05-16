@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QQuickStyle>
+#include <QIcon>
 
 using namespace Qt::StringLiterals;
 
@@ -35,6 +36,7 @@ void loadDotEnv(const QString &path) {
 int main(int argc, char *argv[]) {
     QQuickStyle::setStyle("Material");
     QGuiApplication app(argc, argv);
+    QGuiApplication::setWindowIcon(QIcon(u"qrc:/qt/qml/PlaneManager/assets/icon.png"_s));
     QQmlApplicationEngine engine;
     engine.setNetworkAccessManagerFactory(new OsmNetworkAccessManagerFactory());
 

@@ -1,0 +1,4 @@
+// Windows application icon
+// This resource is used by Windows Explorer / taskbar for the .exe icon.
+
+IDI_ICON1 ICON "assets/icon.ico"

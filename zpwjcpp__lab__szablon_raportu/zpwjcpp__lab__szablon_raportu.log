@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.16)  9 MAY 2026 17:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.16)  16 MAY 2026 21:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -791,11 +791,16 @@ LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encod
 LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
 LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
 LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
-) (../src/main.cpp [14])
+) (../src/main.cpp
+Overfull \hbox (120.62207pt too wide) in paragraph at lines 39--40
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]  
+ []
+
+[14])
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 161.
  [15]
-<przykladowy_zrzut.png, id=526, 786.94pt x 522.95375pt>
+<przykladowy_zrzut.png, id=528, 786.94pt x 522.95375pt>
 File: przykladowy_zrzut.png Graphic file (type png)
 <use przykladowy_zrzut.png>
 Package pdftex.def Info: przykladowy_zrzut.png  used on input line 184.
@@ -809,17 +814,17 @@ Package rerunfilecheck Info: File `zpwjcpp__lab__szablon_raportu.out' has not ch
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 29592 strings out of 467867
- 552949 string characters out of 5418334
+ 29602 strings out of 467867
+ 553091 string characters out of 5418334
  1272307 words of memory out of 5000000
- 57555 multiletter control sequences out of 15000+600000
+ 57563 multiletter control sequences out of 15000+600000
  644054 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,12n,120p,1355b,2635s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecit1095.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0600.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi450\ectt0800.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc2074.pk><C:/Users/chubo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on zpwjcpp__lab__szablon_raportu.pdf (18 pages, 1187564 bytes).
+Output written on zpwjcpp__lab__szablon_raportu.pdf (18 pages, 1188059 bytes).
 PDF statistics:
- 1119 PDF objects out of 1200 (max. 8388607)
- 450 named destinations out of 1000 (max. 500000)
+ 1122 PDF objects out of 1200 (max. 8388607)
+ 452 named destinations out of 1000 (max. 500000)
  28 words of extra memory for PDF output out of 10000 (max. 10000000)
 
