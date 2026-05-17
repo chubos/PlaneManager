@@ -574,7 +574,7 @@ Item {
             spacing: 10
 
             Label {
-                text: "Wybierz date i godzine"
+                text: "Wybierz datę i godzinę"
                 font.bold: true
             }
 

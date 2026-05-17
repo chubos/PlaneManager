@@ -38,10 +38,10 @@ Item {
                 var distText = parsed.distanceKm !== undefined ? Number(parsed.distanceKm).toFixed(2) + " km" : "?"
                 mapExtractStatus = "Pobrano dane z linku. Zaproponowano ICAO: " + parsed.icaoSuggested + " (" + distText + ")"
             } else {
-                mapExtractStatus = "Pobrano nazwe i wspolrzedne z linku."
+                mapExtractStatus = "Pobrano nazwę i współrzędne z linku."
             }
         } else {
-            mapExtractStatus = parsed.error ? parsed.error : "Nie udalo sie odczytac danych z linku."
+            mapExtractStatus = parsed.error ? parsed.error : "Nie udało się odczytać danych z linku."
         }
     }
 
