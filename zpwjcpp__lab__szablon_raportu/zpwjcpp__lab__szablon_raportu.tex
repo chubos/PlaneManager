@@ -14,7 +14,12 @@
 \usepackage{datetime2}
 \usepackage{enumitem}
 \usepackage{blindtext}
+\usepackage{tocloft}
 \usepackage{hyperref}
+
+% kropki w spisie treści ("...." pomiędzy tytułem a numerem strony)
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
 
 \pagestyle{fancy}
 \fancyfoot[L,R]{\tiny{\texttt{\symbol{64}}  built: \today{} at \DTMcurrenttime}} 
@@ -44,7 +49,10 @@
     breakatwhitespace=true,
     frame=single,
     rulecolor=\color{black},
-    captionpos=b
+    captionpos=b,
+    literate=
+        {ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ź}{{\'z}}1 {ż}{{\.{z}}}1
+        {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ź}{{\'Z}}1 {Ż}{{\.{Z}}}1
 }
 
 \lstset{style=cppstyle}
@@ -65,131 +73,382 @@
     {\large {\today} \par}
 \end{titlepage}
 
-\section*{Wstęp}
+\tableofcontents
+\newpage
 
-Plane Manager to desktopowa aplikacja do zarządzania niewielką flotą lotniczą, zaprojektowana tak, aby w prosty i czytelny sposób zarządzać informacjami o samolotach oraz ich wykorzystaniu w zaplanowanych lotach. Z perspektywy użytkownika aplikacja działa jak mały panel administracyjny: można dodać samolot, uzupełnić jego parametry techniczne (np. długość, liczba silników, pojemność pasażerska, prędkość i pułap), zmienić status (np. dostępny lub w serwisie), a następnie zaplanować lot pomiędzy wybranymi lotniskami. Podczas rezerwacji i edycji lotów aplikacja pilnuje porządku w terminarzu --- sprawdza, czy daty są poprawne oraz czy nie dochodzi do nakładania się rezerwacji dla tego samego samolotu; dodatkowo uwzględnia sytuację, w której samolot jest wyłączony z użytku (np. znajduje się w serwisie). Poza samym planowaniem lotów dostępny jest też widok podsumowań: statystyki floty (ile maszyn jest dostępnych, w locie lub w serwisie), a także informacje takie jak najdłuższy i najkrótszy samolot czy największa i najmniejsza liczba pasażerów. Dzięki temu jednym spojrzeniem można ocenić, w jakiej kondycji jest flota i jakie maszyny wyróżniają się parametrami.
-Projekt został zrealizowany w oparciu o framework Qt. Logika aplikacji i komunikacja z bazą danych zostały napisane w C++, natomiast interfejs użytkownika przygotowano w QML, co pozwoliło uzyskać responsywny i miły dla oka układ widoków. Dane przechowywane są w relacyjnej bazie PostgreSQL uruchomionej w środowisku Supabase, a dostęp do nich realizowany jest przez moduł QtSql.
+\section{Wstęp}
+
+Plane Manager to desktopowa aplikacja do zarządzania niewielką flotą lotniczą, zaprojektowana tak, aby w prosty i czytelny sposób zarządzać informacjami o samolotach oraz ich wykorzystaniu w zaplanowanych lotach. Z perspektywy użytkownika aplikacja działa jak mały panel administracyjny: można dodać samolot, uzupełnić jego parametry techniczne (np. długość, liczba silników, pojemność pasażerska, prędkość i pułap), zmienić status (np. dostępny lub w serwisie), a następnie zaplanować lot pomiędzy wybranymi lotniskami. Podczas rezerwacji i edycji lotów aplikacja pilnuje porządku w terminarzu: sprawdza, czy daty są poprawne oraz czy nie dochodzi do nakładania się rezerwacji dla tego samego samolotu; dodatkowo uwzględnia sytuację, w której samolot jest wyłączony z użytku (np. znajduje się w serwisie). 
+
+Poza samym planowaniem lotów dostępny jest też widok podsumowań: statystyki floty (ile maszyn jest dostępnych, w locie lub w serwisie), a także informacje takie jak najdłuższy i najkrótszy samolot czy największa i najmniejsza liczba pasażerów. Dzięki temu jednym spojrzeniem można ocenić, w jakiej kondycji jest flota i jakie maszyny wyróżniają się parametrami.
+
+Projekt został zrealizowany w oparciu o framework Qt. Logika aplikacji i komunikacja z bazą danych zostały napisane w C++, natomiast interfejs użytkownika przygotowano w QML, co pozwoliło uzyskać responsywny i miły dla oka układ widoków. Dane przechowywane są w relacyjnej bazie PostgreSQL uruchomionej w środowisku Supabase. Dzięki temu rozwiązaniu aplikacja jest gotowa do dalszej rozbudowy (np. o kolejne encje, takie jak załoga czy trasy) i może być łatwo przenoszona pomiędzy komputerami bez konieczności ręcznej konfiguracji bazy danych (parametry dostępu są pobierane ze zmiennych środowiskowych).
 
 
 \newpage
 
-\section*{Baza danych}
+\section{Baza danych}
 
-Po uruchomieniu aplikacji nawiązywane jest połączenie z bazą danych PostgreSQL działającą w Supabase. Za ten etap odpowiada klasa \texttt{DatabaseManager}, która konfiguruje połączenie w QtSql z użyciem sterownika \texttt{QPSQL}. Parametry dostępu nie są wpisane na stałe w kodzie --- aplikacja pobiera je ze zmiennych środowiskowych (m.in. \texttt{DB\_HOST}, \texttt{DB\_NAME}, \texttt{DB\_USER}, \texttt{DB\_PASS}, \texttt{DB\_PORT}), co ułatwia przenoszenie projektu pomiędzy komputerami i ogranicza ryzyko przypadkowego ujawnienia danych dostępowych w repozytorium. Dodatkowo ustawione zostały opcje połączenia takie jak \texttt{keepalives} i limit czasu na nawiązanie połączenia, aby zmniejszyć prawdopodobieństwo rozłączania sesji na warstwie poolera.
+Po uruchomieniu aplikacji nawiązywane jest połączenie z bazą danych PostgreSQL działającą w Supabase. Za ten etap odpowiada klasa \texttt{DatabaseManager}. Parametry dostępu nie są wpisane na stałe w kodzie, aplikacja pobiera je ze zmiennych środowiskowych \texttt{.ENV}, co ułatwia przenoszenie projektu pomiędzy komputerami i ogranicza ryzyko przypadkowego ujawnienia danych dostępowych w repozytorium.
 
-Warstwa danych aplikacji została oparta o relacyjną bazę PostgreSQL uruchomioną w środowisku Supabase. Taki wybór pozwala przechowywać dane w sposób uporządkowany (tabele i relacje), a jednocześnie ułatwia dalszą rozbudowę projektu o kolejne encje. Po stronie aplikacji połączenie realizowane jest przez QtSql z wykorzystaniem sterownika QPSQL, a zapytania wykonywane są w większości jako \texttt{prepared statements} (\texttt{QSqlQuery::prepare} oraz \texttt{bindValue}), co poprawia czytelność kodu i ogranicza ryzyko błędów związanych z wklejaniem wartości do SQL.
-
-W projekcie baza danych składa się z trzech głównych tabel, które odzwierciedlają podstawowe elementy domeny:
+W projekcie baza danych składa się z trzech głównych tabel, które są niezbędne w zarzadzaniu flotą lotniczą i planowaniem lotów:
 \begin{itemize}[leftmargin=*]
     \item \textbf{planes} --- przechowuje informacje o samolotach (marka, model, status oraz parametry techniczne takie jak długość, liczba silników, pojemność, prędkość maksymalna i pułap). Rekordy identyfikowane są kluczem głównym \texttt{id}.
-    \item \textbf{airports} --- zawiera lotniska wraz z kodem ICAO, nazwą oraz współrzędnymi geograficznymi (szerokość i długość). Rekordy identyfikowane są kluczem \texttt{id}; kod \texttt{icao\_code} jest wykorzystywany do czytelnej prezentacji w UI.
+    \item \textbf{airports} --- zawiera lotniska wraz z kodem ICAO, nazwą oraz współrzędnymi geograficznymi (szerokość i długość). Rekordy identyfikowane są kluczem \texttt{id}.
     \item \textbf{flights} --- reprezentuje zaplanowane loty: wskazuje samolot (\texttt{plane\_id}) oraz lotniska wylotu i przylotu (\texttt{departure\_airport\_id}, \texttt{arrival\_airport\_id}), a także przedział czasowy lotu (\texttt{start\_time}, \texttt{end\_time}).
 \end{itemize}
 
-Relacje pomiędzy tabelami są naturalne dla problemu: jeden samolot może wystąpić w wielu lotach (relacja 1--N), a każdy lot wskazuje dwa lotniska (wylotu i przylotu). Schemat relacji przedstawiono na diagramie~\ref{fig:db_erd}. W czasie implementacji ważne było również poprawne przetwarzanie czasu --- wartości czasowe zapisywane są w bazie w UTC (aplikacja dokonuje konwersji na UTC przy zapisie oraz na czas lokalny przy prezentacji), a przy dodawaniu/edycji lotu wykonywana jest walidacja terminów, w tym wykrywanie nakładania się rezerwacji dla tego samego samolotu.
+Schemat bazy przedstawiono na diagramie~\ref{fig:db_erd}. W czasie implementacji ważne było również poprawne przetwarzanie czasu --- wartości czasowe zapisywane są w bazie w UTC (aplikacja dokonuje konwersji na UTC przy zapisie oraz na czas lokalny przy prezentacji), a przy dodawaniu/edycji lotu wykonywana jest walidacja terminów, w tym wykrywanie nakładania się rezerwacji dla tego samego samolotu.
 
 \begin{figure}[H]%
     \centering
-    \includegraphics[width=0.9\textwidth]{baza.png}
+    \includegraphics[width=0.9\textwidth]{bazaERD.png}
     \caption{Diagram relacji bazy danych (ERD)}
     \label{fig:db_erd}
 \end{figure}
 
 Poniżej przedstawiono przykładowe fragmenty kodu odpowiedzialne za operacje CRUD (Create, Read, Update, Delete) na głównych encjach aplikacji: samolotach, lotniskach oraz lotach.
 
-\textbf{Samoloty (planes).} Listing~\ref{lst:crud_planes} pokazuje kompletny zestaw operacji na tabeli \texttt{planes}. Dodawanie i aktualizacja realizowane są poprzez zapytania parametryzowane (\texttt{prepare} + \texttt{bindValue}), co upraszcza przekazywanie wielu pól technicznych samolotu i zachowuje porządek w kodzie. Odczyt (\texttt{getAllPlanes}) pobiera listę samolotów w postaci \texttt{QVariantList} z mapami, gotową do bezpośredniego użycia w warstwie QML. Dodatkowo w zapytaniu odczytu zastosowano logikę w SQL (\texttt{CASE} + \texttt{EXISTS}), aby status samolotu w UI uwzględniał to, czy maszyna aktualnie bierze udział w locie.
+
+\subsection{Samoloty (\texttt{planes})}
+
+Samoloty są jedną z kluczowych encji w aplikacji, dlatego operacje CRUD na tabeli \texttt{planes} są bardziej rozbudowane. Oprócz podstawowych pól (marka, model, status) tabela zawiera również parametry techniczne (długość, liczba silników, pojemność, prędkość maksymalna i pułap), które są istotne dla planowania lotów. Dodatkowo podczas odczytu listy samolotów uwzględniany jest aktualny status (dostępny/w locie/w serwisie) na podstawie danych z tabeli \texttt{flights}.
+
+\subsubsection{Create}
+
+Dodawanie samolotu realizuje metoda \texttt{addPlane} (listing~\ref{lst:planes_create}). Zapytanie \texttt{INSERT} jest parametryzowane, a wartości pól są wiązane przez \texttt{bindValue}. Dzięki temu interfejs QML może przekazać komplet parametrów technicznych bez ręcznego składania SQL, co zapobiega również atakom typu SQL Injection.
 
 \lstinputlisting[
-    caption={Operacje CRUD dla samolotów (tabela \texttt{planes})},
-    label={lst:crud_planes},
+    caption={Create dla samolot\'ow: \texttt{addPlane}},
+    label={lst:planes_create},
     inputencoding=cp1250,
     firstline=14,
+    lastline=38
+]{../src/PlaneManager.cpp}
+
+\subsubsection{Read}
+
+Odczyt listy samolotów odbywa się w \texttt{getAllPlanes} (listing~\ref{lst:planes_read}) i zwraca \texttt{QVariantList} map, co jest bezpośrednio kompatybilne z QML.
+
+\lstinputlisting[
+    caption={Read dla samolot\'ow: \texttt{getAllPlanes}},
+    label={lst:planes_read},
+    inputencoding=cp1250,
+    firstline=39,
+    lastline=75
+]{../src/PlaneManager.cpp}
+
+\subsubsection{Update}
+
+Aktualizacja danych samolotu wykonywana jest przez \texttt{updatePlane} (listing~\ref{lst:planes_update}). Metoda aktualizuje zarówno pola opisowe, jak i parametry techniczne, a ścieżka do grafiki jest zapisywana jako \texttt{NULL} w przypadku pustej wartości.
+
+\lstinputlisting[
+    caption={Update dla samolot\'ow: \texttt{updatePlane}},
+    label={lst:planes_update},
+    inputencoding=cp1250,
+    firstline=76,
+    lastline=102
+]{../src/PlaneManager.cpp}
+
+\subsubsection{Delete}
+
+Usuwanie samolotu to proste \texttt{DELETE} po identyfikatorze \texttt{id} (listing~\ref{lst:planes_delete}), również wykonane jako zapytanie parametryzowane.
+
+\lstinputlisting[
+    caption={Delete dla samolot\'ow: \texttt{deletePlane}},
+    label={lst:planes_delete},
+    inputencoding=cp1250,
+    firstline=103,
     lastline=115
 ]{../src/PlaneManager.cpp}
 
-\textbf{Lotniska (airports).} Listing~\ref{lst:crud_airports} prezentuje podstawowe operacje CRUD dla lotnisk. Model danych jest tu prosty (kod ICAO, nazwa oraz współrzędne), dlatego zapytania są krótkie i czytelne: dodanie rekordu, pobranie listy posortowanej po kodzie ICAO, edycja oraz usunięcie po identyfikatorze \texttt{id}. Tak przygotowana warstwa pozwala UI szybko zasilać listy wyboru lotnisk oraz przechowywać dane potrzebne np. do prezentacji na mapie.
+\subsection{Lotniska (\texttt{airports})}
+
+Model danych lotnisk jest prosty (kod ICAO, nazwa, współrzędne), dzięki czemu operacje CRUD są krótkie i czytelne. Dodatkowo w \texttt{AirportManager} znajduje się funkcja pomocnicza do parsowania linku z Google Maps, co ułatwia dodawanie nowych lotnisk bez konieczności ręcznego wpisywania współrzędnych.
+
+\subsubsection{Create}
+
+Dodanie lotniska realizuje \texttt{addAirport} (listing~\ref{lst:airports_create}). Zapytanie \texttt{INSERT} jest parametryzowane, a wartości są wiązane przez \texttt{bindValue}. Dzięki temu można łatwo dodać nowe lotnisko z poziomu UI, podając kod ICAO, nazwę i współrzędne (lub link z Google Maps).
 
 \lstinputlisting[
-    caption={Operacje CRUD dla lotnisk (tabela \texttt{airports})},
-    label={lst:crud_airports},
+    caption={Create dla lotnisk: \texttt{addAirport}},
+    label={lst:airports_create},
     inputencoding=cp1250,
     firstline=13,
+    lastline=29
+]{../src/AirportManager.cpp}
+
+\subsubsection{Read}
+
+Odczyt listy lotnisk w \texttt{getAllAirports} (listing~\ref{lst:airports_read}) pobiera dane posortowane po \texttt{icao\_code} i zwraca \texttt{QVariantList} map gotową do użycia w QML.
+
+\lstinputlisting[
+    caption={Read dla lotnisk: \texttt{getAllAirports} (tabela \texttt{airports})},
+    label={lst:airports_read},
+    inputencoding=cp1250,
+    firstline=30,
+    lastline=45
+]{../src/AirportManager.cpp}
+
+\subsubsection{Update}
+
+Edycja lotniska (listing~\ref{lst:airports_update}) odbywa się poprzez \texttt{UPDATE} po \texttt{id} i pozwala zmienić wszystkie pola modelu.
+
+\lstinputlisting[
+    caption={Update dla lotnisk: \texttt{updateAirport}},
+    label={lst:airports_update},
+    inputencoding=cp1250,
+    firstline=46,
+    lastline=62
+]{../src/AirportManager.cpp}
+
+\subsubsection{Delete}
+
+Usuwanie lotniska w \texttt{deleteAirport} (listing~\ref{lst:airports_delete}) wykonuje \texttt{DELETE} po \texttt{id}.
+
+\lstinputlisting[
+    caption={Delete dla lotnisk: \texttt{deleteAirport}},
+    label={lst:airports_delete},
+    inputencoding=cp1250,
+    firstline=63,
     lastline=74
 ]{../src/AirportManager.cpp}
 
-\textbf{Loty (flights).} Listing~\ref{lst:crud_flights} zawiera operacje CRUD dla lotów, ale w tym przypadku sama „goła” manipulacja danymi nie wystarcza --- najważniejsza jest walidacja reguł biznesowych. Przed dodaniem lub aktualizacją lotu aplikacja sprawdza m.in. czy wybrany samolot nie ma statusu serwisowego oraz czy jego terminarz nie koliduje z innymi lotami (nakładanie się przedziałów czasu). Odczyt listy lotów korzysta z \texttt{JOIN}, aby poza identyfikatorami zwrócić też czytelne dane (np. marka/model samolotu, kody ICAO i współrzędne lotnisk), a dodatkowo wylicza status lotu (zaplanowany/w trakcie/zakończony) na podstawie czasu.
+\subsection{Loty (\texttt{flights})}
+
+Przy lotach bardzo ważna jest walidacja reguł biznesowych. Przy dodawaniu i edycji aplikacja sprawdza m.in. czy wybrany samolot nie jest w serwisie oraz czy nie dochodzi do kolizji terminów.
+
+\subsubsection{Create}
+
+Rezerwacja lotu w \texttt{addFlight} (listing~\ref{lst:flights_create}) wykonuje walidację (sprawdza status serwisowy i konflikt terminów), a następnie zapisuje rekord w bazie. Czas jest konwertowany do UTC przed zapisem.
 
 \lstinputlisting[
-    caption={Operacje CRUD dla lotów (tabela \texttt{flights}) wraz z walidacją terminów},
-    label={lst:crud_flights},
+    caption={Create dla lot\'ow: \texttt{addFlight}},
+    label={lst:flights_create},
     inputencoding=cp1250,
-    firstline=1,
+    firstline=87,
+    lastline=118
+]{../src/FlightManager.cpp}
+
+\subsubsection{Read}
+
+Odczyt lotów (listing~\ref{lst:flights_read}) korzysta z \texttt{JOIN}, aby zwrócić czytelne dane (np. marka/model samolotu oraz kody ICAO i współrzędne lotnisk). Dodatkowo status lotu (zaplanowany/w trakcie/zakończony) jest wyliczany na podstawie czasu.
+
+\lstinputlisting[
+    caption={Read dla lot\'ow: \texttt{getAllFlights}},
+    label={lst:flights_read},
+    inputencoding=cp1250,
+    firstline=119,
+    lastline=181
+]{../src/FlightManager.cpp}
+
+\subsubsection{Update}
+
+Aktualizacja lotu w \texttt{updateFlight} (listing~\ref{lst:flights_update}) ponownie wykonuje walidację, a następnie zapisuje nowe parametry lotu jako \texttt{UPDATE}. Dzięki temu funkcja edycji jest równie bezpieczna i spójna jak dodawanie nowego lotu.
+
+\lstinputlisting[
+    caption={Update dla lot\'ow: \texttt{updateFlight}},
+    label={lst:flights_update},
+    inputencoding=cp1250,
+    firstline=182,
+    lastline=214
+]{../src/FlightManager.cpp}
+
+\subsubsection{Delete}
+
+Usuwanie lotu (listing~\ref{lst:flights_delete}) realizuje \texttt{DELETE} po \texttt{id} i zwalnia termin w planie samolotu.
+
+\lstinputlisting[
+    caption={Delete dla lot\'ow: \texttt{deleteFlight} (tabela \texttt{flights})},
+    label={lst:flights_delete},
+    inputencoding=cp1250,
+    firstline=215,
     lastline=226
 ]{../src/FlightManager.cpp}
 
 
 \newpage
 
-\section*{Struktura aplikacji}
+\section{Struktura aplikacji}
 
-Aplikacja została zbudowana w typowym dla Qt podziale na warstwę logiki w C++ oraz warstwę interfejsu w QML. W praktyce oznacza to, że widoki (lista samolotów, lista lotów, statystyki itd.) są zdefiniowane w QML, natomiast pobieranie i modyfikacja danych odbywa się w C++ przez QtSql. Ważnym elementem architektury jest sposób komunikacji C++--QML: w tym projekcie „klasy” nie pełnią roli tradycyjnych obiektów domenowych (z bogatym modelem typów i osobnymi klasami \texttt{Plane}/\texttt{Flight}/\texttt{Airport}), tylko są lekkimi \textbf{serwisami} (menedżerami) udostępniającymi zestaw metod do UI.
+Aplikacja została zbudowana w podziale na warstwę logiki w C++ oraz warstwę interfejsu w QML. Ważnym elementem architektury jest sposób komunikacji C++--QML: w tym projekcie klasy nie pełnią roli tradycyjnych obiektów domenowych (z bogatym modelem typów i osobnymi klasami \texttt{Plane}/\texttt{Flight}/\texttt{Airport}), tylko są lekkimi serwisami (menedżerami) udostępniającymi zestaw metod do UI.
 
-\subsection*{Warstwa C++: serwisy (menedżery)}
+\subsection*{Diagram klas}
+
+Diagram~\ref{fig:class_diagram} przedstawia główne klasy C++ udostępniane do QML (serwisy) oraz ich relacje. Warto zaznaczyć, że pola typu \texttt{id}, \texttt{icao\_code} itp. nie są atrybutami klas C++. Są to odpowiednio kolumny w bazie danych oraz klucze w mapach zwracanych do QML (\texttt{QVariantMap}).
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.95\textwidth]{klasy.png}
+    \caption{Diagram klas aplikacji (serwisy C++ i zale\.{z}no\'sci)}
+    \label{fig:class_diagram}
+\end{figure}
+
+\subsection*{Warstwa C++: serwisy i komunikacja z bazą danych}
 
 W części C++ znajdują się klasy dziedziczące po \texttt{QObject}, których głównym zadaniem jest udostępnienie API do QML oraz komunikacja z bazą danych:
 \begin{itemize}[leftmargin=*]
-    \item \textbf{\texttt{DatabaseManager}} --- inicjalizuje połączenie z PostgreSQL (Supabase) przez sterownik \texttt{QPSQL}.
-    \item \textbf{\texttt{PlaneManager}} --- operacje CRUD na samolotach oraz zapytania statystyczne (np. statystyki statusów i „ekstrema” floty).
-    \item \textbf{\texttt{AirportManager}} --- operacje CRUD na lotniskach oraz funkcje pomocnicze (np. parsowanie linku z Google Maps i podpowiedzi lotnisk).
-    \item \textbf{\texttt{FlightManager}} --- operacje CRUD na lotach wraz z walidacją terminów oraz pobieraniem danych z \texttt{JOIN} (samolot + lotniska).
+    \item \textbf{\texttt{DatabaseManager}}: inicjalizuje połączenie z PostgreSQL (Supabase).
+    \item \textbf{\texttt{PlaneManager}}: operacje CRUD na samolotach oraz zapytania dla uzyskania danych statystycznych.
+    \item \textbf{\texttt{AirportManager}}: operacje CRUD na lotniskach oraz funkcje pomocnicze (np. parsowanie linku z Google Maps i podpowiedzi lotnisk).
+    \item \textbf{\texttt{FlightManager}}: operacje CRUD na lotach wraz z walidacją terminów oraz pobieraniem danych z tabel samolotów i lotnisk.
 \end{itemize}
 
-Warto podkreślić, że nie są to „tradycyjne” klasy w znaczeniu obiektów przechowujących stan domeny w pamięci. Pełnią one rolę cienkiej warstwy pośredniej pomiędzy UI a bazą danych: wywołanie metody w QML uruchamia zapytanie SQL, a wynik jest konwertowany do typu zrozumiałego dla QML.
+Klasy pełnią rolę warstwy pośredniej pomiędzy UI a bazą danych: wywołanie metody w QML uruchamia zapytanie SQL, a wynik jest konwertowany do typu zrozumiałego dla QML.
 
 \subsection*{Udostępnienie serwisów do QML}
 
-Zamiast rejestrowania typów w silniku QML i budowy własnych modeli (np. \texttt{QAbstractListModel}), w projekcie zastosowano proste rozwiązanie: obiekty serwisów są wstrzykiwane do kontekstu QML jako \texttt{contextProperty}. Dzięki temu QML widzi je jako globalne obiekty (np. \texttt{planeService}) i może bezpośrednio wywoływać ich metody oznaczone jako \texttt{Q\_INVOKABLE}.
+W projekcie nie tworzono własnych modeli QML (np. \texttt{QAbstractListModel}). Zamiast tego serwisy z C++ są dodane do kontekstu jako \texttt{contextProperty}. Dzięki temu QML widzi je jako dostępne globalnie obiekty (np. \texttt{planeService}) i może wywoływać ich metody \texttt{Q\_INVOKABLE}.
 
 \lstinputlisting[
-    caption={Udostępnienie obiektów serwisów w kontekście QML (fragment \texttt{main.cpp})},
+    caption={Udost\k{e}pnienie obiekt\'ow serwis\'ow w kontek\'scie QML (fragment \texttt{main.cpp})},
     label={lst:qml_context_services},
     inputencoding=cp1250,
-    firstline=37,
+    firstline=45,
     lastline=72
 ]{../src/main.cpp}
 
-\subsection*{Wymiana danych: \texttt{QVariantList} i \texttt{QVariantMap}}
+\subsection*{Wymiana danych przez \texttt{QVariantList} i \texttt{QVariantMap}}
 
 Kluczową cechą tej architektury jest dobór typów zwracanych przez metody serwisów. QML operuje na dynamicznych strukturach podobnych do JavaScript (tablice i obiekty), dlatego w C++ zwracane są typy generyczne:
 \begin{itemize}[leftmargin=*]
-    \item \textbf{\texttt{QVariantList}} --- lista rekordów (np. lista samolotów lub lotów),
-    \item \textbf{\texttt{QVariantMap}} --- pojedynczy rekord lub „obiekt” ze zbiorem pól (klucze--wartości),
+    \item \textbf{\texttt{QVariantList}}: lista rekordów (np. lista samolotów lub lotów),
+    \item \textbf{\texttt{QVariantMap}}: pojedynczy rekord lub obiekt ze zbiorem pól (klucze--wartości),
 \end{itemize}
 
-W praktyce wygląda to następująco: C++ wykonuje zapytanie \texttt{QSqlQuery}, dla każdego wiersza tworzy mapę (np. \texttt{\{id, brand, model, status\}}), a następnie dodaje ją do listy. Po stronie QML rezultat jest przypisywany bezpośrednio jako model widoku listy, a w delegacie elementy są odczytywane przez klucze mapy (np. \texttt{modelData.brand}, \texttt{modelData.status}). To podejście znacząco upraszcza integrację z UI i redukuje ilość kodu „klejącego” (bez pisania osobnych klas modeli i rejestracji typów).
-
-Minusem jest mniejsza kontrola typów w czasie kompilacji (łatwo o literówkę w nazwie klucza), jednak w projekcie o tej skali kompromis jest korzystny: logika pozostaje po stronie SQL/C++, a QML pełni rolę warstwy prezentacji.
+W praktyce wygląda to następująco: C++ wykonuje zapytanie \texttt{QSqlQuery}, dla każdego wiersza tworzy mapę (np. \texttt{\{id, brand, model, status\}}), a następnie dodaje ją do listy. Po stronie QML rezultat jest przypisywany bezpośrednio jako model widoku listy, a w delegacie elementy są odczytywane przez klucze mapy (np. \texttt{modelData.brand}, \texttt{modelData.status}). To podejście znacząco upraszcza integrację z UI.
 
 
 \newpage
 
-\section*{Działanie aplikacji}
+\section{Działanie aplikacji}
 
-W tym miejscu należy opisać końcowy rezultat oraz przedstawić 
-screeny~\ref{fig:przykladowy_zrzut_3} pokazujące wazne momenty 
-działania aplikacji.
+Poniżej przedstawiono najważniejsze widoki aplikacji wraz z krótkim opisem ich działania. Każdy zrzut ekranu pokazuje osobną funkcję (lub grupę funkcji) tak, aby w raporcie było widać pełny zakres możliwości aplikacji.
+\subsection{Ekran główny: nawigacja pomiędzy modułami}
+
+Na ekranie głównym widoczny jest panel boczny z nawigacją oraz obszar roboczy. Aplikacja udostępnia pięć głównych modułów: \textit{Samoloty}, \textit{Lotniska}, \textit{Loty}, \textit{Mapa} oraz \textit{Statystyka}. Przełączanie widoków realizowane jest przez \texttt{StackView} w QML.
 
 \begin{figure}[H]%
     \centering
-    \includegraphics[width=0.9\textwidth]{przykladowy_zrzut.png}
-    \caption{Przykładowy zrzut ekranu}
-    \label{fig:przykladowy_zrzut_3}
+    \includegraphics[width=0.5\textwidth]{screen_01_nawigacja.png}
+    \caption{Ekran główny aplikacji z panelem nawigacji}
+    \label{fig:screen_nawigacja}
+\end{figure}
+
+\subsection{Samoloty: lista floty (odczyt danych)}
+
+Widok listy samolotów prezentuje bieżącą flotę wraz ze statusem każdej maszyny.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_02_samoloty_lista.png}
+    \caption{Widok listy samolotów (Read)}
+    \label{fig:screen_samoloty_lista}
+\end{figure}
+
+\subsection{Samoloty: dodawanie nowej maszyny (Create)}
+
+Przycisk \textit{Dodaj Samolot} otwiera formularz, w którym można wprowadzić podstawowe dane (marka, model, status) oraz parametry techniczne. Po zatwierdzeniu formularza wywoływana jest metoda serwisu C++ wykonująca operację \texttt{INSERT} w bazie danych.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_03_samolot_dodaj.png}
+    \caption{Dialog dodawania samolotu (Create)}
+    \label{fig:screen_samolot_dodaj}
+\end{figure}
+
+\subsection{Samoloty: edycja i usuwanie (Update/Delete)}
+
+Z poziomu listy można otworzyć dialog edycji (modyfikacja danych w bazie przez \texttt{UPDATE}) oraz usunąć rekord (\texttt{DELETE}). Dzięki temu moduł samolotów realizuje pełne CRUD na tabeli \texttt{planes}.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_04_samolot_edycja.png}
+    \caption{Dialog edycji samolotu (Update) oraz przyciski usuwania w widoku listy (Delete)}
+    \label{fig:screen_samolot_edycja}
+\end{figure}
+
+\subsection{Samoloty: szczegóły i zarządzanie zdjęciem}
+
+Po wybraniu opcji \textit{Szczegóły} wyświetlany jest ekran z informacjami o konkretnym samolocie. Użytkownik może zmienić zdjęcie maszyny poprzez wybór pliku graficznego z dysku i przesłanie go do aplikacji, a następnie obraz jest wyświetlany w widoku szczegółów.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_05_samolot_szczegoly.png}
+    \caption{Widok szczegółów samolotu wraz z obsługą zdjęcia}
+    \label{fig:screen_samolot_szczegoly}
+\end{figure}
+
+\subsection{Lotniska: lista i zarządzanie rekordami (Read/Update/Delete)}
+
+Moduł lotnisk pozwala przeglądać bazę lotnisk oraz edytować i usuwać wpisy. Każdy rekord zawiera kod ICAO, nazwę oraz współrzędne geograficzne, które są wykorzystywane m.in. w module mapy.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_06_lotniska_lista.png}
+    \caption{Widok listy lotnisk z opcjami edycji i usuwania}
+    \label{fig:screen_lotniska_lista}
+\end{figure}
+
+\subsection{Lotniska: dodawanie z pomocą linku Google Maps i podpowiedzi}
+
+Podczas dodawania lotniska dostępne jest wsparcie wprowadzania danych: aplikacja potrafi odczytać nazwę i współrzędne z linku Google Maps, a także wyświetla podpowiedzi lotnisk po wpisaniu fragmentu nazwy. Funkcje te ograniczają liczbę błędów i przyspieszają tworzenie nowych rekordów.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_07_lotnisko_dodaj.png}
+    \caption{Dialog dodawania lotniska: pobranie danych z linku i lista podpowiedzi}
+    \label{fig:screen_lotnisko_dodaj}
+\end{figure}
+
+\subsection{Loty: harmonogram (Read) i anulowanie rezerwacji (Delete)}
+
+Widok lotów prezentuje harmonogram rezerwacji floty wraz z trasą (kodami ICAO) oraz godzinami startu i lądowania. Z poziomu listy można również anulować lot, co usuwa rekord z bazy i zwalnia termin samolotu.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_08_loty_lista.png}
+    \caption{Widok listy lotów (Read) oraz przycisk anulowania (Delete)}
+    \label{fig:screen_loty_lista}
+\end{figure}
+
+\subsection{Loty: planowanie i edycja lotu (Create/Update) oraz wybór daty}
+
+Przy planowaniu i edycji lotu użytkownik wybiera samolot oraz lotniska wylotu i przylotu z list rozwijanych, a daty ustawia przez wbudowany selektor daty i czasu. Po zatwierdzeniu wykonywana jest walidacja w warstwie C++ (np. konflikt terminów lub samolot w serwisie), a następnie zapis do bazy.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_09_loty_dodaj_picker.png}
+    \caption{Dialog planowania/edycji lotu z otwartym selektorem daty i czasu}
+    \label{fig:screen_loty_dodaj_picker}
+\end{figure}
+
+\subsection{Mapa lotów}
+
+Widok mapy prezentuje aktualnie trwające loty na podkładzie OpenStreetMap. Pozycja samolotu jest wyliczana na podstawie czasu (procent przebiegu pomiędzy startem a końcem), a trasa jest rysowana jako linia pomiędzy lotniskami. Dodatkowo widoczne są liczniki lotów w trakcie, nadchodzących i zakończonych.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_10_mapa.png}
+    \caption{Mapa lotów z trasą, markerami oraz licznikami}
+    \label{fig:screen_mapa}
+\end{figure}
+
+\subsection{Statystyka floty}
+
+Moduł statystyk prezentuje podsumowanie floty: liczbę samolotów w poszczególnych statusach oraz wykres kołowy rozkładu. Dodatkowo wyświetlane są wartości ekstremalne (np. najdłuższy i najkrótszy samolot), co ułatwia szybki przegląd zasobów.
+
+\begin{figure}[H]%
+    \centering
+    \includegraphics[width=0.9\textwidth]{screen_11_statystyka.png}
+    \caption{Widok statystyk floty (podsumowania i wykres)}
+    \label{fig:screen_statystyka}
 \end{figure}
 
 
 \newpage
 
-\section*{Podsumowanie}
+\section{Podsumowanie}
 
 W tym miejscu należy podsumować projekt. Warto opisać co było 
 najtrudniejszym elementem, jaka część była najciekawsza, a~która 

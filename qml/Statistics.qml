@@ -378,19 +378,19 @@ Item {
                                 Layout.fillWidth: true
 
                                 Label { text: "Średnia:"; font.pixelSize: 13 }
-                                Label { text: root.stats ? Math.round(root.stats.avgPassengers) + " pax" : "0 pax"; font.pixelSize: 12; font.bold: true }
+                                Label { text: root.stats ? Math.round(root.stats.avgPassengers) + " os." : "0 os."; font.pixelSize: 12; font.bold: true }
 
                                 Label { text: "Maksymalna:"; font.pixelSize: 13 }
                                 ColumnLayout {
                                     spacing: 2
-                                    Label { text: root.extremes ? root.extremes.maxPassengersValue + " pax" : "0 pax"; font.pixelSize: 12; font.bold: true }
+                                    Label { text: root.extremes ? root.extremes.maxPassengersValue + " os." : "0 os."; font.pixelSize: 12; font.bold: true }
                                     Label { text: root.extremes ? (root.extremes.maxPassengersBrand + " " + root.extremes.maxPassengersModel) : ""; font.pixelSize: 10 }
                                 }
 
                                 Label { text: "Minimalna:"; font.pixelSize: 13 }
                                 ColumnLayout {
                                     spacing: 2
-                                    Label { text: root.extremes ? root.extremes.minPassengersValue + " pax" : "0 pax"; font.pixelSize: 12; font.bold: true }
+                                    Label { text: root.extremes ? root.extremes.minPassengersValue + " os." : "0 os."; font.pixelSize: 12; font.bold: true }
                                     Label { text: root.extremes ? (root.extremes.minPassengersBrand + " " + root.extremes.minPassengersModel) : ""; font.pixelSize: 10 }
                                 }
                             }

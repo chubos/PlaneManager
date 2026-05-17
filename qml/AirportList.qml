@@ -242,7 +242,7 @@ Item {
                 }
 
                 Button {
-                    text: "Otworz Google Maps"
+                    text: "Otwórz Google Maps"
                     Layout.fillWidth: true
                     onClicked: {
                         var urlToOpen = mapsUrlInput.text.length > 0 ? mapsUrlInput.text : "https://www.google.com/maps"

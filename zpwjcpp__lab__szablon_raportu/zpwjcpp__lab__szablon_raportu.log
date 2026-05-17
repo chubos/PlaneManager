@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.16)  16 MAY 2026 21:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.16)  17 MAY 2026 18:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -514,6 +514,42 @@ Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 \c@blind@randommax=\count351
 \c@blind@pangramcount=\count352
 \c@blind@pangrammax=\count353
+) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/tocloft\tocloft.sty
+Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
+Package tocloft Info: The document has section divisions on input line 51.
+\cftparskip=\skip70
+\cftbeforetoctitleskip=\skip71
+\cftaftertoctitleskip=\skip72
+\cftbeforepartskip=\skip73
+\cftpartnumwidth=\skip74
+\cftpartindent=\skip75
+\cftbeforesecskip=\skip76
+\cftsecindent=\skip77
+\cftsecnumwidth=\skip78
+\cftbeforesubsecskip=\skip79
+\cftsubsecindent=\skip80
+\cftsubsecnumwidth=\skip81
+\cftbeforesubsubsecskip=\skip82
+\cftsubsubsecindent=\skip83
+\cftsubsubsecnumwidth=\skip84
+\cftbeforeparaskip=\skip85
+\cftparaindent=\skip86
+\cftparanumwidth=\skip87
+\cftbeforesubparaskip=\skip88
+\cftsubparaindent=\skip89
+\cftsubparanumwidth=\skip90
+\cftbeforeloftitleskip=\skip91
+\cftafterloftitleskip=\skip92
+\cftbeforefigskip=\skip93
+\cftfigindent=\skip94
+\cftfignumwidth=\skip95
+\c@lofdepth=\count354
+\c@lotdepth=\count355
+\cftbeforelottitleskip=\skip96
+\cftafterlottitleskip=\skip97
+\cftbeforetabskip=\skip98
+\cfttabindent=\skip99
+\cfttabnumwidth=\skip100
 ) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
 Package: hyperref 2026-01-29 v7.01p Hypertext links for LaTeX
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
@@ -531,11 +567,11 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
-\c@section@level=\count354
+\c@section@level=\count356
 )
 \@linkdim=\dimen288
-\Hy@linkcounter=\count355
-\Hy@pagecounter=\count356
+\Hy@linkcounter=\count357
+\Hy@pagecounter=\count358
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
 File: pd1enc.def 2026-01-29 v7.01p Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
@@ -543,7 +579,7 @@ Now handling font encoding PD1 ...
 ) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count357
+\Hy@SavedSpaceFactor=\count359
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
 File: puenc.def 2026-01-29 v7.01p Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
@@ -556,7 +592,7 @@ Package hyperref Info: Plain pages OFF on input line 4216.
 Package hyperref Info: Backreferencing OFF on input line 4221.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4468.
-\c@Hy@tempcnt=\count358
+\c@Hy@tempcnt=\count360
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
@@ -568,7 +604,7 @@ Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 ))
-\Fld@menulength=\count359
+\Fld@menulength=\count361
 \Field@Width=\dimen290
 \Fld@charsize=\dimen291
 Package hyperref Info: Hyper figures OFF on input line 6084.
@@ -578,15 +614,15 @@ Package hyperref Info: backreferencing OFF on input line 6099.
 Package hyperref Info: Link coloring OFF on input line 6104.
 Package hyperref Info: Link coloring with OCG OFF on input line 6109.
 Package hyperref Info: PDF/A mode OFF on input line 6114.
-\Hy@abspage=\count360
-\c@Item=\count361
-\c@Hfootnote=\count362
+\Hy@abspage=\count362
+\c@Item=\count363
+\c@Hfootnote=\count364
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
 File: hpdftex.def 2026-01-29 v7.01p Hyperref driver for pdfTeX
-\Fld@listcount=\count363
-\c@bookmark@seq@number=\count364
+\Fld@listcount=\count365
+\c@bookmark@seq@number=\count366
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
 Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
@@ -594,7 +630,7 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 )
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 284.
 )
-\Hy@SectionHShift=\skip70
+\Hy@SectionHShift=\skip101
 ) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 ) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
@@ -603,31 +639,31 @@ File: lstlang1.sty 2025/11/14 1.11b listings language file
 File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
 ) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count365
+\l__color_backend_stack_int=\count367
 ) (zpwjcpp__lab__szablon_raportu.aux
 Package babel Info: 'polish' activates 'polish' shorthands.
 (babel)             Reported on input line 8.
 )
 \openout1 = `zpwjcpp__lab__szablon_raportu.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -669,16 +705,16 @@ package with kernel methods
 
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count366
+\scratchcounter=\count368
 \scratchdimen=\dimen292
 \scratchbox=\box71
-\nofMPsegments=\count367
-\nofMParguments=\count368
+\nofMPsegments=\count369
+\nofMParguments=\count370
 \everyMPshowfont=\toks44
-\MPscratchCnt=\count369
+\MPscratchCnt=\count371
 \MPscratchDim=\dimen293
-\MPnumerator=\count370
-\makeMPintoPDFobject=\count371
+\MPnumerator=\count372
+\makeMPintoPDFobject=\count373
 \everyMPtoPDFconversion=\toks45
 ) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -686,7 +722,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-\c@lstlisting=\count372
+\c@lstlisting=\count374
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
 Package: inputenc 2024/02/08 v1.3d Input encoding file
 \inpenc@prehook=\toks46
@@ -695,43 +731,49 @@ Package: inputenc 2024/02/08 v1.3d Input encoding file
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 52.
+Package hyperref Info: Link coloring OFF on input line 60.
  (zpwjcpp__lab__szablon_raportu.out) (zpwjcpp__lab__szablon_raportu.out)
 \@outlinefile=\write4
 \openout4 = `zpwjcpp__lab__szablon_raportu.out'.
 
-<logo_kia.png, id=6, 160.6pt x 161.60374pt>
+<logo_kia.png, id=130, 160.6pt x 161.60374pt>
 File: logo_kia.png Graphic file (type png)
 <use logo_kia.png>
-Package pdftex.def Info: logo_kia.png  used on input line 55.
+Package pdftex.def Info: logo_kia.png  used on input line 63.
 (pdftex.def)             Requested size: 120.92421pt x 121.68335pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 63.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 71.
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 63.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 71.
  (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{C:/Users/chubo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./logo_kia.png (PNG copy)>]
+{C:/Users/chubo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./logo_kia.png (PNG copy)>] (zpwjcpp__lab__szablon_raportu.toc)
+\tf@toc=\write5
+\openout5 = `zpwjcpp__lab__szablon_raportu.toc'.
+
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.74 \newpage
+l.77 \newpage
               [1]
-<baza.png, id=26, 629.35126pt x 666.99188pt>
-File: baza.png Graphic file (type png)
-<use baza.png>
-Package pdftex.def Info: baza.png  used on input line 93.
-(pdftex.def)             Requested size: 435.32419pt x 461.3546pt.
+Package babel Info: 'polish' activates 'polish' shorthands.
+(babel)             Reported on input line 88.
  [2]
-Overfull \hbox (4.4311pt too wide) in paragraph at lines 100--101
-\T1/cmr/m/n/12 wa-nie i ak-tu-ali-za-cja re-ali-zo-wane s¡ po-przez za-py-ta-nia pa-ra-me-try-zo-wane (\T1/cmtt/m/n/12 prepare \T1/cmr/m/n/12 + \T1/cmtt/m/n/12 bindValue\T1/cmr/m/n/12 ),
- []
-
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 108.
-(C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+<bazaERD.png, id=187, 629.35126pt x 666.99188pt>
+File: bazaERD.png Graphic file (type png)
+<use bazaERD.png>
+Package pdftex.def Info: bazaERD.png  used on input line 105.
+(pdftex.def)             Requested size: 435.32419pt x 461.3546pt.
+ [3]
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 113.
+ [4 <./bazaERD.png>]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 127.
+ (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
 File: cp1250.def 2024/02/08 v1.3d Input encoding file
 LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
 LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
@@ -740,91 +782,171 @@ LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (
 ) (../src/PlaneManager.cpp
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 14.
- [3 <./baza.png>] [4] [5]) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
 File: cp1250.def 2024/02/08 v1.3d Input encoding file
 LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
 LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
 LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
 LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
-) (../src/AirportManager.cpp [6]) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+) (../src/PlaneManager.cpp [5]) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
 File: cp1250.def 2024/02/08 v1.3d Input encoding file
 LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
 LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
 LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
 LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
-) (../src/FlightManager.cpp [7] [8] [9] [10]
-Overfull \hbox (38.77057pt too wide) in paragraph at lines 165--166
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (25.19037pt too wide) in paragraph at lines 166--167
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (18.40027pt too wide) in paragraph at lines 167--168
-[][][][][][][][][][][][][][][][][][][][][][]  
- []
-
-
-Overfull \hbox (4.82007pt too wide) in paragraph at lines 168--169
-[][][][][][][][][][][][][][][][][][][][][][]  
- []
-
-[11] [12]) [13]
+) (../src/PlaneManager.cpp [6]) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/PlaneManager.cpp) [7] (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/AirportManager.cpp) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/AirportManager.cpp) [8] (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/AirportManager.cpp) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/AirportManager.cpp) [9] (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/FlightManager.cpp) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/FlightManager.cpp [10] [11]) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/FlightManager.cpp [12]) (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+File: cp1250.def 2024/02/08 v1.3d Input encoding file
+LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
+LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
+LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
+LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
+) (../src/FlightManager.cpp) [13]
+<klasy.png, id=560, 1615.03375pt x 1623.06375pt>
+File: klasy.png Graphic file (type png)
+<use klasy.png>
+Package pdftex.def Info: klasy.png  used on input line 282.
+(pdftex.def)             Requested size: 459.51051pt x 461.78548pt.
+ [14 <./klasy.png>]
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 141.
-
-Overfull \hbox (18.4751pt too wide) in paragraph at lines 151--152
-\T1/cmr/m/n/12 Zamiast re-je-stro-wa-nia ty-pów w sil-niku QML i bu-dowy wªa-snych mo-deli (np. \T1/cmtt/m/n/12 QAbstractListModel\T1/cmr/m/n/12 ),
- []
-
-
-Overfull \hbox (13.37393pt too wide) in paragraph at lines 151--152
-\T1/cmr/m/n/12 QML jako \T1/cmtt/m/n/12 contextProperty\T1/cmr/m/n/12 . Dzi¦ki temu QML wi-dzi je jako glo-balne obiekty (np. \T1/cmtt/m/n/12 planeService\T1/cmr/m/n/12 )
- []
-
-(C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 291.
+ (C:\Users\chubo\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1250.def
 File: cp1250.def 2024/02/08 v1.3d Input encoding file
 LaTeX Encoding Info:    Ignoring declaration for text command \textdegree (encoding ?) on input line 47.
 LaTeX Encoding Info:    Ignoring declaration for text command \textcurrency (encoding ?) on input line 48.
 LaTeX Encoding Info:    Ignoring declaration for text command \textbrokenbar (encoding ?) on input line 50.
 LaTeX Encoding Info:    Ignoring declaration for text command \textperthousand (encoding ?) on input line 52.
-) (../src/main.cpp
-Overfull \hbox (120.62207pt too wide) in paragraph at lines 39--40
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]  
- []
-
-[14])
-LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 161.
- [15]
-<przykladowy_zrzut.png, id=528, 786.94pt x 522.95375pt>
-File: przykladowy_zrzut.png Graphic file (type png)
-<use przykladowy_zrzut.png>
-Package pdftex.def Info: przykladowy_zrzut.png  used on input line 184.
-(pdftex.def)             Requested size: 435.32419pt x 289.2852pt.
- [16 <./przykladowy_zrzut.png>] [17] (zpwjcpp__lab__szablon_raportu.aux)
+) (../src/main.cpp) [15] [16]
+<screen_01_nawigacja.png, id=606, 178.41656pt x 343.2825pt>
+File: screen_01_nawigacja.png Graphic file (type png)
+<use screen_01_nawigacja.png>
+Package pdftex.def Info: screen_01_nawigacja.png  used on input line 333.
+(pdftex.def)             Requested size: 241.84842pt x 465.34944pt.
+ [17 <./screen_01_nawigacja.png>]
+<screen_02_samoloty_lista.png, id=614, 974.13937pt x 632.3625pt>
+File: screen_02_samoloty_lista.png Graphic file (type png)
+<use screen_02_samoloty_lista.png>
+Package pdftex.def Info: screen_02_samoloty_lista.png  used on input line 344.
+(pdftex.def)             Requested size: 435.32419pt x 282.59209pt.
+<screen_03_samolot_dodaj.png, id=615, 973.38657pt x 634.62094pt>
+File: screen_03_samolot_dodaj.png Graphic file (type png)
+<use screen_03_samolot_dodaj.png>
+Package pdftex.def Info: screen_03_samolot_dodaj.png  used on input line 355.
+(pdftex.def)             Requested size: 435.32419pt x 283.81438pt.
+ [18 <./screen_02_samoloty_lista.png>]
+<screen_04_samolot_edycja.png, id=623, 973.38657pt x 634.62094pt>
+File: screen_04_samolot_edycja.png Graphic file (type png)
+<use screen_04_samolot_edycja.png>
+Package pdftex.def Info: screen_04_samolot_edycja.png  used on input line 366.
+(pdftex.def)             Requested size: 435.32419pt x 283.81438pt.
+ [19 <./screen_03_samolot_dodaj.png> <./screen_04_samolot_edycja.png>]
+<screen_05_samolot_szczegoly.png, id=632, 972.63374pt x 630.85687pt>
+File: screen_05_samolot_szczegoly.png Graphic file (type png)
+<use screen_05_samolot_szczegoly.png>
+Package pdftex.def Info: screen_05_samolot_szczegoly.png  used on input line 377.
+(pdftex.def)             Requested size: 435.32419pt x 282.35242pt.
+<screen_06_lotniska_lista.png, id=633, 971.88094pt x 633.86812pt>
+File: screen_06_lotniska_lista.png Graphic file (type png)
+<use screen_06_lotniska_lista.png>
+Package pdftex.def Info: screen_06_lotniska_lista.png  used on input line 388.
+(pdftex.def)             Requested size: 435.32419pt x 283.92262pt.
+ [20 <./screen_05_samolot_szczegoly.png>]
+<screen_07_lotnisko_dodaj.png, id=640, 973.38657pt x 633.86812pt>
+File: screen_07_lotnisko_dodaj.png Graphic file (type png)
+<use screen_07_lotnisko_dodaj.png>
+Package pdftex.def Info: screen_07_lotnisko_dodaj.png  used on input line 399.
+(pdftex.def)             Requested size: 435.32419pt x 283.4777pt.
+ [21 <./screen_06_lotniska_lista.png>]
+<screen_08_loty_lista.png, id=647, 977.15062pt x 636.12656pt>
+File: screen_08_loty_lista.png Graphic file (type png)
+<use screen_08_loty_lista.png>
+Package pdftex.def Info: screen_08_loty_lista.png  used on input line 410.
+(pdftex.def)             Requested size: 435.32419pt x 283.40059pt.
+ [22 <./screen_07_lotnisko_dodaj.png>]
+<screen_09_loty_dodaj_picker.png, id=654, 974.13937pt x 636.87938pt>
+File: screen_09_loty_dodaj_picker.png Graphic file (type png)
+<use screen_09_loty_dodaj_picker.png>
+Package pdftex.def Info: screen_09_loty_dodaj_picker.png  used on input line 421.
+(pdftex.def)             Requested size: 435.32419pt x 284.6106pt.
+ [23 <./screen_08_loty_lista.png>]
+<screen_10_mapa.png, id=661, 976.39781pt x 636.12656pt>
+File: screen_10_mapa.png Graphic file (type png)
+<use screen_10_mapa.png>
+Package pdftex.def Info: screen_10_mapa.png  used on input line 432.
+(pdftex.def)             Requested size: 435.32419pt x 283.61414pt.
+ [24 <./screen_09_loty_dodaj_picker.png>]
+<screen_11_statystyka.png, id=669, 973.38657pt x 635.37375pt>
+File: screen_11_statystyka.png Graphic file (type png)
+<use screen_11_statystyka.png>
+Package pdftex.def Info: screen_11_statystyka.png  used on input line 443.
+(pdftex.def)             Requested size: 435.32419pt x 284.15105pt.
+ [25 <./screen_10_mapa.png>] [26 <./screen_11_statystyka.png>] [27] (zpwjcpp__lab__szablon_raportu.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `zpwjcpp__lab__szablon_raportu.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+(rerunfilecheck)             Checksum: 07EBADB6812B7ABB4A9CC0A638A9EACF;5368.
  ) 
 Here is how much of TeX's memory you used:
- 29602 strings out of 467867
- 553091 string characters out of 5418334
- 1272307 words of memory out of 5000000
- 57563 multiletter control sequences out of 15000+600000
- 644054 words of font info for 77 fonts, out of 8000000 for 9000
+ 29984 strings out of 467867
+ 561931 string characters out of 5418334
+ 1275287 words of memory out of 5000000
+ 57944 multiletter control sequences out of 15000+600000
+ 645053 words of font info for 79 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,12n,120p,1355b,2635s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecit1095.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0600.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi450\ectt0800.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc2074.pk><C:/Users/chubo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on zpwjcpp__lab__szablon_raportu.pdf (18 pages, 1188059 bytes).
+ 84i,12n,120p,971b,2555s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecit1095.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecst1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0600.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi450\ectt0800.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsl1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1728.pk> <C:\Users\chubo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc2074.pk><C:/Users/chubo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on zpwjcpp__lab__szablon_raportu.pdf (28 pages, 1596168 bytes).
 PDF statistics:
- 1122 PDF objects out of 1200 (max. 8388607)
- 452 named destinations out of 1000 (max. 500000)
- 28 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1391 PDF objects out of 1440 (max. 8388607)
+ 408 named destinations out of 1000 (max. 500000)
+ 331 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -118,7 +118,6 @@ bool FlightManager::addFlight(int planeId, int depAirportId, int arrAirportId,
 
 QVariantList FlightManager::getAllFlights() {
     QVariantList list;
-    // Pobieramy ID, ale tez czytelne nazwy dzieki JOIN
     QString sql = "SELECT f.id, p.brand, p.model, "
                   "dep.icao_code as dep_icao, arr.icao_code as arr_icao, "
                   "dep.latitude as dep_latitude, dep.longitude as dep_longitude, "
@@ -155,21 +154,25 @@ QVariantList FlightManager::getAllFlights() {
 
         QVariantMap map;
         map["id"] = query.value("id");
-        map["planeName"] = query.value("brand").toString() + " " + query.value("model").toString();
+        map["planeName"] = query.value("brand").toString() + " " +
+            query.value("model").toString();
         map["depIcao"] = query.value("dep_icao");
         map["arrIcao"] = query.value("arr_icao");
         map["depLatitude"] = query.value("dep_latitude");
         map["depLongitude"] = query.value("dep_longitude");
         map["arrLatitude"] = query.value("arr_latitude");
         map["arrLongitude"] = query.value("arr_longitude");
-        map["startTime"] = toLocalForDisplay(query.value("start_time")).toString("dd.MM.yyyy HH:mm");
-        map["endTime"] = toLocalForDisplay(query.value("end_time")).toString("dd.MM.yyyy HH:mm");
-        map["startTimeUtcMs"] = toUtcForCompare(query.value("start_time")).toMSecsSinceEpoch();
-        map["endTimeUtcMs"] = toUtcForCompare(query.value("end_time")).toMSecsSinceEpoch();
+        map["startTime"] = toLocalForDisplay(query.value("start_time"))
+            .toString("dd.MM.yyyy HH:mm");
+        map["endTime"] = toLocalForDisplay(query.value("end_time"))
+            .toString("dd.MM.yyyy HH:mm");
+        map["startTimeUtcMs"] = toUtcForCompare(query.value("start_time"))
+            .toMSecsSinceEpoch();
+        map["endTimeUtcMs"] = toUtcForCompare(query.value("end_time"))
+            .toMSecsSinceEpoch();
         map["status"] = statusText;
         map["statusColor"] = statusColor;
         
-        // Te ID beda potrzebne przy edycji (zeby ustawic ComboBoxy)
         map["planeId"] = query.value("plane_id");
         map["depAirportId"] = query.value("departure_airport_id");
         map["arrAirportId"] = query.value("arrival_airport_id");
